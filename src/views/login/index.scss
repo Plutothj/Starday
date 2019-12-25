@@ -1,0 +1,60 @@
+.icon1 {
+    position: absolute;
+    top: 39px;
+    margin-left: 20px;
+    font-size: 24px;
+    color: #999;
+}
+
+.logo {
+    img {
+        width: 106px;
+        height: 106px;
+        padding-left: 135px;
+        padding-top: 73px;
+    }
+}
+
+.login {
+    width: 335px;
+    height: 44px;
+    margin: 0 auto;
+    margin-top: 64px;
+    .emile {
+        height: 55px;
+        margin-bottom: 10px;
+        background-color: #f2f2f2;
+        line-height: 18px;
+        font-size: 16px;
+    }
+    .button {
+        background-color: #ed5821;
+        height: 44px;
+        font-size: 16px;
+    }
+    .info {
+        height: 44px;
+        font-size: 16px;
+        margin-top: 30px;
+    }
+    .forget {
+        float: right;
+        margin: 8px 0 20px 0px;
+        font-size: 12px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        text-decoration: underline;
+        color: rgba(153, 153, 153, 1);
+    }
+    .newperson {
+        width: 63px;
+        height: 13px;
+        font-size: 12px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        text-decoration: underline;
+        color: rgba(51, 51, 51, 1);
+        line-height: 17px;
+        margin: 14px auto;
+    }
+}

@@ -1,0 +1,261 @@
+.index {
+    width: 100%;
+    height: 100%;
+    background: #f4f4f4;
+    padding-bottom: 50px;
+    .header {
+      width: 100%;
+      height: 44px;
+      padding: 10px;
+      box-sizing: border-box;
+      position: relative;
+      background: #fff;
+      text-align: center;
+      img {
+        width: 90px;
+        height: 26px;
+      }
+    }
+    .search_container {
+      width: 100%;
+      background: #f4f4f4; // padding: 12px 0;
+      .search {
+        .van-search {
+          background: #f4f4f4 !important;
+          .van-search__content {
+            background: #ffffff;
+            border-radius: 5px;
+          }
+        }
+        .van-cell {
+          input {
+            font-family: PingFangSC-Regular;
+            font-weight: 400;
+            color: rgba(153, 153, 153, 1);
+          }
+        }
+      }
+      .banner {
+        text-align: center;
+      }
+    }
+    .shopContainer {
+      width: 100%;
+      .goods-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px 0 0;
+        background: #fff;
+        .goods-item {
+          width: 72px;
+          margin: 0 10px;
+          text-align: center;
+          .img-container {
+            width: 54px;
+            height: 54px;
+            overflow: hidden;
+            margin: 0 auto;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          p {
+            font-size: 10px;
+          }
+        }
+      }
+      .recommen-container {
+        width: 100%;
+        margin-bottom: 10px;
+        background: #fff;
+        img {
+          display: block;
+          width: 50px;
+          height: 50px;
+        }
+      }
+      .movement-container {
+        width: 100%;
+        background: #fff;
+        margin-bottom: 10px;
+        .module-name {
+          font-size: 17px;
+          font-family: PingFangSC-Medium;
+          font-weight: bold;
+          color: rgba(51, 51, 51, 1);
+          margin: 0;
+          padding: 20px 0;
+          text-align: center;
+        }
+        .movement-list {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          padding: 0 15px;
+          box-sizing: border-box;
+          .movement-item {
+            text-align: left;
+            margin-bottom: 15px; // width: 33.3%;
+            width: 105px;
+            box-sizing: border-box;
+            .img-container {
+              width: 105px;
+              height: 128px;
+              margin: 0 auto;
+              border-radius: 5px;
+              overflow: hidden;
+              img {
+                width: 100%; // height: 100%;
+              }
+            }
+            .goods-name {
+              font-size: 14px;
+              font-family: PingFangSC-Regular;
+              font-weight: 400;
+              color: rgba(51, 51, 51, 1);
+              line-height: 30px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              word-break: keep-all;
+              white-space: nowrap;
+            }
+            .now-price {
+              display: flex;
+              justify-content: start;
+              align-items: center;
+              .price {
+                font-size: 14px;
+                color: #ee6734;
+                margin: 0 0 8px 0;
+              }
+              .tips {
+                width: 30px;
+                height: 12px;
+                img {
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+            }
+            .foot-price {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              .price {
+                font-size: 10px;
+                color: #9f9f9f;
+                margin: 0 0 8px 0;
+                position: relative;
+                .line {
+                  width: 100%;
+                  height: 1px;
+                  background: #9f9f9f;
+                  position: absolute;
+                  top: -4px;
+                  left: 2px;
+                }
+              }
+              .tips {
+                width: 16px;
+                height: 15px;
+                img {
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+            }
+          }
+        }
+        .showMore {
+          text-align: center;
+          font-size: 14px;
+          font-family: PingFangSC-Regular;
+          font-weight: 400;
+          color: rgba(102, 102, 102, 1);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          vertical-align: middle;
+          .img-container {
+            width: 7px;
+            height: 14px;
+            margin-left: 4px;
+            margin-top: -2px;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+    .goTop {
+      position: fixed;
+      bottom: 60px;
+      right: 10px;
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .load {
+      width: 100%;
+      height: 40px;
+      background: #fff;
+      position: fixed;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 10px;
+      box-sizing: border-box;
+      .close {
+        font-size: 20px;
+      }
+      .tips {
+        width: 220px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        font-size: 12px;
+        .icon-img {
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          overflow: hidden;
+          background: url(/static/img/big-logo.png) no-repeat;
+          background-size: 100% 100%;
+          margin-right: 6px;
+        }
+        .tipsText {
+          width: 170px;
+        }
+      }
+      .load-it {
+        width: 80px;
+        line-height: 20px;
+        padding: 0 10px;
+        background: rgb(237, 88, 33);
+        color: #fff;
+      }
+    } // .closePadding{
+    //   padding-top: 40px;
+    // }
+    .jsLoading {
+      width: 100%;
+      position: fixed;
+      top: 200px;
+      margin: 0 auto;
+      text-align: center;
+      z-index: 999;
+      .van-loading__text {
+        color: #fff;
+      }
+    }
+  }

@@ -1,0 +1,67 @@
+.head {
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .head_img {
+    float: left;
+    margin-top: 45px;
+    margin-left: 15px;
+  }
+  
+  .head_name {
+    float: left;
+    margin-top: 60px;
+    margin-left: 20px;
+    height: 28px;
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 28px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 230px;
+  }
+  
+  .head {
+    span {
+      
+      
+      margin-left: 10px;
+      
+    }
+  }
+  
+  .menu_user {
+    margin-top: 12px; //height: 302px;
+    .van-van-cell {
+      height: 54px;
+      text-align: left;
+    }
+    .return {
+      margin-top: 0px;
+    }
+  }
+  
+  .menu_info {
+    margin-top: 12px;
+    .van-van-cell {
+      text-align: left;
+    }
+  }
+  
+  .tag {
+    position: absolute;
+    top: 390px;
+    left: 300px;
+  }
+  
+  .setting {
+    font-size: 18px;
+    position: absolute;
+    top: 35px;
+    right: 20px;
+  }

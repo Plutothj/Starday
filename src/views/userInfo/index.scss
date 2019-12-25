@@ -1,0 +1,51 @@
+.nav {
+    width: 400px;
+    height: 44px;
+    position: fixed;
+    top: 0;
+    .van-ellipsis {
+      font-size: 18px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 50px;
+      margin-left: 60px;
+    }
+    .van-nav-bar__left i {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+    }
+  }
+  
+  .change_img {
+    margin-top: 68px;
+    height: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+    span {
+      height: 40px;
+      font-size: 14px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 40px;
+      float: left;
+    }
+    .change_icon {
+      float: right;
+    }
+  }
+  
+  .save {
+    position: absolute;
+    bottom: 0;
+  }
+  .sex_wrap{
+    padding-left: 20px;
+    padding-top: 20px;
+  }
+  .sex{
+    display: flex;
+    padding-left: 20px;
+  }

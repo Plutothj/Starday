@@ -1,0 +1,25 @@
+.nav1 {
+    width: 400px;
+    height: 44px;
+    position: fixed;
+    top: 0;
+    .van-ellipsis {
+      font-size: 18px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 50px;
+      margin-left: 60px;
+    }
+    .van-nav-bar__left i {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+    }
+  }
+  .main {
+    margin-top: 48px;
+    .logout {
+      margin-top: 50px;
+    }
+  }

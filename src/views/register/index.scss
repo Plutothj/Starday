@@ -1,0 +1,105 @@
+.nav {
+    width: 400px;
+    height: 44px;
+    position: fixed;
+    top: 0;
+    .van-ellipsis {
+      font-size: 18px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 50px;
+      margin-left: 60px;
+    }
+    .van-nav-bar__left i {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+    }
+  }
+  
+  .register {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 65px;
+    p {
+      width: 250px;
+      font-size: 17px;
+      font-family: PingFangSC-Medium;
+      font-weight: 500;
+      color: rgba(51, 51, 51, 1);
+      line-height: 24px;
+      span {
+        font-size: 12px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(236, 88, 30, 1);
+        line-height: 15px;
+        margin-left: 5px;
+      }
+    }
+    .datepick {
+      margin-top: 60px;
+      text-align: left;
+    }
+    .sixn {
+      float: left;
+      height: 21px;
+      font-size: 15px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: rgba(51, 51, 51, 1);
+      line-height: 21px;
+      margin-right: 10px;
+      margin-bottom: 20px;
+    }
+    .reg_emile {
+      margin-bottom: 20px;
+      background-color: #f2f2f2;
+      line-height: 20px;
+      font-size: 12px;
+      border: 1px solid rgba(226, 226, 226, 1);
+      border-radius: 5px;
+    }
+    .L0 {
+      height: 70px;
+    }
+    .reg_emile_1 {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      border: 1px solid rgba(226, 226, 226, 1);
+      width: 152px;
+      float: left;
+      margin-right: 20px;
+      height: 40px;
+      margin-bottom: 20px;
+      font-size: 12px;
+    }
+    .button {
+      width: 345px;
+      height: 44px;
+      background: rgba(236, 88, 30, 1);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+      line-height: 42px;
+      margin-top: 16px;
+    }
+    .agree {
+      margin-top: 40px;
+      height: 20px;
+      font-size: 12px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: #333333;
+      line-height: 20px;
+    }
+  }
+  
+  .van-popup--center {
+    width: 70%;
+    margin-top: 30px;
+    padding: 15px;
+  }

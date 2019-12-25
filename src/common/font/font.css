@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "PingFangSC-Regular";
+    src: url('./SourceHanSansCN-Regular.otf');
+}
+@font-face {
+    font-family: "DINAlternate-Bold";
+    src: url('./DINAlternateBold.ttf');
+}
+
+.home h1, .demo > .test {
+    font-family: 'PingFangSC-Regular';
+}

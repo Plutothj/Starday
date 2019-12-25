@@ -1,0 +1,240 @@
+.app-cart {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    text-align: left;
+    .clear::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .loading {
+      margin: 0 auto;
+      text-align: center;
+    }
+    .cart-body {
+      padding-bottom: 100px;
+      .cart-list {
+        width: 100%;
+        background: #f4f4f4;
+        padding-top: 10px;
+        .cart-item {
+          padding: 10px 15px;
+          background: #fff;
+          margin-bottom: 10px;
+          .store-name {
+            margin-bottom: 10px; // .van-checkbox__label {
+            //   font-size: 15px;
+            //   font-family: PingFangSC-Regular;
+            //   font-weight: 400;
+            //   color: rgba(51, 51, 51, 1);
+            // }
+            .checkBox {
+              display: flex;
+              justify-content: start;
+              align-items: center;
+              vertical-align: middle;
+              font-size: 15px;
+              font-family: PingFangSC-Regular;
+              font-weight: 400;
+              color: rgba(51, 51, 51, 1);
+            }
+            input[type="checkbox"] {
+              width: 20px;
+              height: 20px;
+              background: #fff;
+              border: 1px solid #979797;
+              border-radius: 50%;
+              margin-right: 11px;
+              cursor: pointer;
+              -webkit-appearance: none;
+              outline: none;
+            }
+            .checkBox input[type="checkbox"]:checked {
+              background: url("../../../static/images/detail/check.png") no-repeat center;
+              background-size: 100% 100%;
+              border: none;
+            }
+          }
+          .store-goods {
+            width: 100%;
+            .goods-item {
+              margin-bottom: 20px;
+              display: flex;
+              justify-content: space-between;
+              .checkBox {
+                width: 40px;
+                margin-top: 30px;
+              }
+              input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+                background: #fff;
+                border: 1px solid #979797;
+                border-radius: 50%;
+                margin-right: 11px;
+                cursor: pointer;
+                -webkit-appearance: none;
+                outline: none;
+              }
+              .checkBox input[type="checkbox"]:checked {
+                background: url("../../../static/images/detail/check.png") no-repeat center;
+                background-size: 100% 100%;
+                border: none;
+              }
+              .goods-container {
+                display: flex;
+                justify-content: start; // align-items: center;
+                .img-container {
+                  width: 90px;
+                  height: 90px;
+                  border-radius: 5px;
+                  overflow: hidden;
+                  margin-right: 10px;
+                  img {
+                    width: 100%;
+                    height: 100%;
+                  }
+                }
+                .goods-info {
+                  flex: 1;
+                  .goods-name {
+                    line-height: 19px;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    overflow: hidden;
+                  }
+                  .skus {
+                    height: 23px;
+                    line-height: 23px;
+                    margin-top: 6px;
+                    border-radius: 3px;
+                    font-size: 11px;
+                    font-family: PingFangSC-Regular;
+                    font-weight: 400;
+                    color: rgba(51, 51, 51, 1);
+                    span {
+                      display: inline;
+                      padding: 6px;
+                      background: rgba(244, 244, 244, 1)
+                    }
+                  }
+                  .skusT {
+                    width: 60px;
+                    height: 23px;
+                    line-height: 23px;
+                    text-align: center;
+                    margin-top: 6px;
+                    background: rgba(244, 244, 244, 1);
+                    border-radius: 3px;
+                    font-size: 11px;
+                    font-family: PingFangSC-Regular;
+                    font-weight: 400;
+                    color: rgba(51, 51, 51, 1);
+                  }
+                  .price-num {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 16px;
+                    .price {
+                      font-size: 15px;
+                      font-family: PingFangSC-Semibold;
+                      font-weight: 600;
+                      color: rgba(237, 88, 33, 1);
+                      margin-right: 20px;
+                    }
+                    .del {
+                      font-size: 11px;
+                      font-family: PingFangSC-Regular;
+                      font-weight: 400;
+                      color: rgba(102, 102, 102, 1);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .favorite {
+      font-size: 11px;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color: rgba(102, 102, 102, 1);
+    }
+    .cart-all {
+      position: fixed;
+      bottom: 48px;
+      width: 100%;
+      height: 49px;
+      line-height: 49px;
+      padding-left: 15px;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f4f4f4;
+      box-sizing: border-box; // .van-checkbox__label {
+      //   font-size: 13px;
+      //   font-family: PingFangSC-Regular;
+      //   font-weight: 400;
+      //   color: rgba(153, 153, 153, 1);
+      // }
+      .checkBox {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        vertical-align: middle;
+        font-size: 13px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(153, 153, 153, 1);
+      }
+      input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        border: 1px solid #979797;
+        border-radius: 50%;
+        margin-right: 11px;
+        cursor: pointer;
+        -webkit-appearance: none;
+        outline: none;
+      }
+      .checkBox input[type="checkbox"]:checked {
+        background: url("../../../static/images/detail/check.png") no-repeat center;
+        background-size: 100% 100%;
+        border: none;
+      }
+      .all-price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .price-content {
+          font-size: 13px;
+          font-family: PingFangSC-Medium;
+          font-weight: 500;
+          color: rgba(51, 51, 51, 1);
+          .price {
+            font-weight: bold;
+            color: rgba(236, 88, 32, 1);
+          }
+        }
+        .submit-btn {
+          width: 125px;
+          height: 49px;
+          margin-left: 10px;
+          padding-right: 3px;
+          background: rgba(236, 88, 32, 1);
+          text-align: center;
+          font-size: 15px;
+          font-family: PingFangSC-Medium;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+    }
+  }
