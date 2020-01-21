@@ -10,7 +10,7 @@
       <van-field v-model="emile" class="reg_emile L0" clearable placeholder="例）starday@starday.com" clickable :error-message="errormsg" @input="Regemil">
         <van-button slot="button" size="small" type="primary" :disabled='disabled' @click="sendCode">{{loadtext}}</van-button>
       </van-field>
-      <van-field v-model="sms" center clearable label="验证码" placeholder="请输入验证码">
+      <van-field v-model="sms" center clearable label="验证码" :placeholder="$t('resetpwd.code')">
 
       </van-field>
       <p>
@@ -51,7 +51,8 @@
     </p>
 
     <van-popup v-model="dateshow">
-      <van-datetime-picker v-model="currentDate" type="date" :min-date="minDate" @confirm='confirm' :formatter='formatter' /></van-popup>
+      <van-datetime-picker v-model="currentDate" type="date" :min-date="minDate" @confirm='confirm' :formatter='formatter' />
+    </van-popup>
 
 
     <van-checkbox v-model="check" checked-color="#EC581E" class="agree" @click="popup">{{$t('register.agree')}}</van-checkbox>

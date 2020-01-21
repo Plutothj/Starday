@@ -22,7 +22,7 @@
             @load="onLoad"
           >
             <van-panel
-              :title="$t('order.order')+item.orderNumber"
+              :title="$t('order.order')+':'+item.orderNumber"
               v-for="(item,index) in orderlist"
               :key="index"
               :status="returnStatus(item.state)"
@@ -38,7 +38,15 @@
                   :key="k"
                   @click="orderdetail(item)"
                 >
-                  
+                  <div slot="footer">
+                    <van-button
+                      size="small "
+                      @click="goCommont(item,$event)"
+                      class="goCommont"
+                      v-if="item.state == 7&&i.evalState!==1"
+                      >{{$t('user_main.comont')}}
+                  </van-button>
+                  </div>
                 </van-card>
                 
                 <!-- <p class="length">
@@ -61,28 +69,21 @@
                 >{{$t('order.gopay')}}</van-button> -->
 
                 <van-divider :style="{ borderColor: '#EC5820', padding: '0 15px' }"></van-divider>
+                <p class="goodsinfo">
+                  {{ $t("returnList.all") }}{{item.orderItem.length}}{{ $t("returnList.goods") }}&nbsp;&nbsp;&nbsp; {{ $t("order.orderprice") }}
+                  <span>{{":￥"+item.payAmount?item.payAmount:''}}</span>
+                </p>
               </div>
               <div slot="footer" class='slot'>
+                
                     <van-button
                       size="small "
                       class="button3"
                       @click="confirm(item.orderNumber,$event)"
                       v-if="item.state == 6"
                     >{{$t('order.p1')}}</van-button>
-                    <van-button
-                      size="small "
-                      @click="goCommont(item,$event)"
-                      class="goCommont"
-                      v-if="item.state == 7"
-                    >{{$t('user_main.comont')}}
-                    </van-button>
-                    <van-button
-                      size="small "
-                      @click="returnGoods(item,$event)"
-                      class="returnGoods"
-                      v-if="item.state == 7||item.state == 5"
-                    >{{$t('user_main.return')}}
-                    </van-button>
+                    
+                    
 
                     <van-button
                       size="small "
@@ -182,8 +183,8 @@ export default class OrderListShow extends Vue {
       let tabList:Array<any>= [
         { name: that.$t("order.all") },
         { name: that.$t("order.nopay") },
-        // { name: that.$t("order.nodeliver") },
-        { name: that.$t("order.bedeliver") },
+        { name: that.$t("order.nodeliver") },
+        // { name: that.$t("order.bedeliver") },
         // { name: that.$t("order.confirmed") },
         // { name: that.$t("returnList.VOID") }
       ]
@@ -211,7 +212,7 @@ export default class OrderListShow extends Vue {
       }
       if (s == "8") {
         //已完成
-        return that.$t("returnList.VOID");
+        return that.$t("order.complete");
       }
     }
     totalnum(list:Array<any>) {
@@ -263,7 +264,8 @@ export default class OrderListShow extends Vue {
         if (res.code == ConstKey.SUCCESS) {
           that.$toast(that.$t("like.cancel"));
           that.reload();
-          that.active = 3;
+          // that.active = 3;
+          that.getdata()
         }
       });
       }).catch(() => {
@@ -294,8 +296,9 @@ export default class OrderListShow extends Vue {
       ).then((res:any) => {
         console.log(res);
         if (res.code == '200') {
-          that.$toast(res.message);
+          
           that.reload();
+          that.$router.go(0)
         }else{
           that.$toast(res.message);
         }
@@ -312,7 +315,8 @@ export default class OrderListShow extends Vue {
             query: {
               orderId: item.order.id,
               orderInfoNumber:item.order.orderNumber,
-              img:item.orderItem[0].goodsInfoImg
+              img:item.orderItem[0].goodsInfoImg,
+              goodsInfoId:item.orderItem[0].goodsInfoId
             }
       });
 
@@ -374,22 +378,23 @@ export default class OrderListShow extends Vue {
         
         that.p_payState = 5;
         that.p_flowState = 5;
-      } else if (key == 3) {
-        //待收货
-        
-        that.p_payState = 6;
-        that.p_flowState = 6;
-      } else if (key == 4) {
-        //已收货
-       
-        that.p_payState = 7;
-        that.p_flowState = 7;
-      } else if (key == 5) {
-        //已完成
-        
-        that.p_payState = 14;
-        that.p_flowState = 14;
       }
+      // } else if (key == 3) {
+      //   //待收货
+        
+      //   that.p_payState = 6;
+      //   that.p_flowState = 6;
+      // } else if (key == 4) {
+      //   //已收货
+       
+      //   that.p_payState = 7;
+      //   that.p_flowState = 7;
+      // } else if (key == 5) {
+      //   //已完成
+        
+      //   that.p_payState = 14;
+      //   that.p_flowState = 14;
+      // }
       that.getdata();
     }
     getdata() {
@@ -603,5 +608,11 @@ export default class OrderListShow extends Vue {
  border: 1px solid rgba(236, 88, 32, 1);
   margin-left:20px;
   color:rgba(236, 88, 32, 1);
+}
+.goodsinfo{
+  font-size: 14px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  padding-left: 20px;
 }
 </style>

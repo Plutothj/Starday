@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view v-if="isRouterAlive"/>
+    <!-- <router-view v-if="isRouterAlive"/> -->
+    <router-view v-if="!$route.meta.keepAlive || !isRouterAlive"></router-view>
+    <keep-alive>
+          <router-view v-if="$route.meta.keepAlive && isRouterAlive"></router-view>
+    </keep-alive>
   </div>
 </template>
 <script lang='ts'>
@@ -23,8 +27,10 @@ export default class App extends Vue {
    
   // 注入方法
   reloadone(){
-      this.isRouterAlive = false
-      this.$nextTick(function(){this.isRouterAlive = true})
+      let that = (this as any)
+      that.isRouterAlive = false
+      that.$nextTick(function(){that.isRouterAlive = true})
+      console.log("无闪烁")
   }
 }
 

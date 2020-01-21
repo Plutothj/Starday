@@ -1,4 +1,35 @@
 
+const PrerenderSPAPlugin = require('prerender-spa-plugin');
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
+var path = require('path');
+
+const devProxy = ['/api','/api','/api'];  // 代理
+var proEnv = require('./config/pro.env');  // 生产环境
+var uatEnv = require('./config/uat.env');  // 测试环境
+var devEnv = require('./config/dev.env');  // 本地环境
+const env = process.env.NODE_ENV;
+let target = '';
+// 默认是本地环境
+if(env==='production'){  // 生产环境
+    target = proEnv.hosturl;
+}else if(env==='test'){ // 测试环境
+    target = uatEnv.hosturl;
+}else{  // 本地环境
+    target = devEnv.hosturl;
+}
+// 生成代理配置对象
+let proxyObj = {};
+devProxy.forEach((value, index) => {
+    proxyObj[value] = {
+        ws: true, 
+        secure: false,
+        changeOrigin:true,
+        target: target,
+        pathRewrite: {
+            [`^/${value}`]: value
+        }
+    };
+});
 module.exports = {
   
   lintOnSave: false,
@@ -36,6 +67,7 @@ module.exports = {
   //   // Output filename is inferred to be `subpage.html`.
   //   // subpage: ''
   // },
+  
 
   // eslint-loader 是否在保存的时候检查
   // lintOnSave: true,
@@ -55,6 +87,29 @@ module.exports = {
   // https://cli.vuejs.org/guide/webpack.html#simple-configuration
   configureWebpack: (config) => {
     let path = require('path')
+    
+    // config.plugins.push(
+    //   new PrerenderSPAPlugin({
+    //     staticDir: path.join(__dirname, './dist'),
+    //     indexPath: path.join(__dirname, './dist', 'index.html'),
+    //     // 需要进行预渲染的路由路径 我这里做的是首页
+    //     routes: ['/'],
+    //     // html文件压缩
+    //     minify: {
+    //         minifyCSS: true, // css压缩
+    //         removeComments: true // 移除注释
+    //     },
+    //     renderer: new Renderer({
+    //         // Optional - The name of the property to add to the window object with the contents of `inject`.
+    //         injectProperty: '__PRERENDER_INJECTED',
+    //         // Optional - Any values you'd like your app to have access to via `window.injectProperty`.
+    //         inject: {},
+    //         // 在 main.js 中 new Vue({ mounted () {document.dispatchEvent(new Event('render-event'))}})，两者的事件名称要对应上。
+    //         // renderAfterDocumentEvent: 'render-event'
+    //     }),
+    //     renderAfterDocumentEvent: 'render-active' 
+    //   })
+    // )
     Object.assign(config, {
       // 开发生产共同配置
  
@@ -88,7 +143,7 @@ module.exports = {
       .exclude
       .add('/Users/maybexia/Downloads/FE/community_built-in/src/lib')
       .end()
-
+    
      
      
           
@@ -113,6 +168,9 @@ module.exports = {
 
       postcss: {
         // options here will be passed to postcss-loader
+        plugins: [
+          require('autoprefixer')({overrideBrowserslist: ['> 0.15% in CN']})// 自动添加css前缀
+          ]
       }
     }
   },
@@ -125,20 +183,10 @@ module.exports = {
     host: '0.0.0.0',
 
     port: 8081,
+    hotOnly: false,
+    disableHostCheck: true,
 
-
-    proxy: {
-      //Dev开发环境本地代理
-      '/api':{
-        target: "http://192.168.100.7:83/",
-        ws: true, 
-        changeOrigin:true,
-        pathRewrite:{
-            '^/api':'api'
-        }
-      
-    }
-    },
+    proxy: proxyObj,
 
     before: app => {
     }
@@ -150,5 +198,8 @@ module.exports = {
   pwa: {},
 
   // 第三方插件配置
-  pluginOptions: {}
+  pluginOptions: {
+    
+  },
+
 };

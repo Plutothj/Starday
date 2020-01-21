@@ -3,7 +3,7 @@
     <div class="store-head">
       <div class="mask-container">
         <div class="mask"></div>
-        <div class="store-head-bg" :style="{backgroundImage: 'url(' + storeInfo.storeSign + ')'}"></div>
+        <div class="store-head-bg" :style="{backgroundImage: 'url(' + storeInfo.storeSignH + ')'}"></div>
       </div>
       <div class="head-container">
         <div class="img-container" @click="goBack">
@@ -29,18 +29,20 @@
           <div class="goods-no">
             <!-- <span>{{$t('store.China')}} |</span> -->
             <span>{{$t('store.goods')}}</span>
+            
             <span>{{saleNum}}件</span>
-           <van-checkbox
+           <!-- <van-checkbox
                   v-model="checked"
                   class="islike"
                   @change="cancle"
                   checked-color="#ED5D28"
                 >
                 フォロー
-                </van-checkbox>
-               
+                </van-checkbox> -->
+            
+                <van-button class="isfocus" size="mini" type="warning" @click="cancle">{{isfocus?$t('newAdd.noFocus'):$t('newAdd.focus')}}</van-button>
           </div>
-          
+         
                   
           
         </div>
@@ -94,7 +96,7 @@
                     </div>
                     <div class="goods-name">{{m.goodsName}}</div>
                     <div class="prices">
-                      <div class="now-price">¥{{m.skuMarketPrice}}</div>
+                      <div class="now-price">¥{{m.skuMarketPrice?m.skuMarketPrice:m.marketPrice}}</div>
                       <!-- <div class="line-price">
                         ¥{{m.goodsInfos[0].marketPrice}}
                         <p class="line"></p>
@@ -185,8 +187,8 @@
 import api from "../../request/api";
 import ConstKey from "../../until/const_key"
 import Vue from "vue";
-import { Search, Cell, Tab, Tabs, List, Toast ,Icon,Checkbox, CheckboxGroup} from "vant";
-Vue.use(Search).use(Cell).use(Tab).use(Tabs).use(List).use(Toast).use(Icon).use(Checkbox).use(CheckboxGroup);
+import { Search, Cell, Tab, Tabs, List, Toast ,Icon,Checkbox, CheckboxGroup,Button} from "vant";
+Vue.use(Search).use(Cell).use(Tab).use(Tabs).use(List).use(Toast).use(Icon).use(Checkbox).use(CheckboxGroup).use(Button);
 import Component from 'vue-class-component'
 
 export default {
@@ -251,7 +253,9 @@ export default {
       isUp: false,
       bgImg: "../../../static/images/detail/back.png",
       sorted:0,
-      sortOrder:'asc'
+      sortOrder:'asc',
+      msg:'关注',
+      isfocus:true,
     };
   },
   methods: {
@@ -278,6 +282,9 @@ export default {
           }
         ).then(res=>{
           console.log(res)
+          if (res.code == 200){
+            that.isfocus = !that.isfocus 
+          }
         })
       
     },
@@ -356,7 +363,8 @@ export default {
           if (res.code == ConstKey.SUCCESS) {
             that.storeInfo = res.context.store;
             that.bgImg ="../../../static/images/detail/bg.png";
-            that.checked = res.context.follow.isFollow == 1?true:false
+            
+            that.isfocus =  res.context.follow.isFollow ==0?false:true
           } else {
             Toast(res.message);
           }
@@ -386,6 +394,7 @@ export default {
             let esList = res.context.data;
             that.goodsList = that.goodsList.concat(esList);
             that.saleNum = res.context.totalRow;
+            
             // 数据全部加载完成
             if (res.context.lastPage) {
               that.finished = true;
@@ -638,6 +647,7 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        padding-top: 5px;
       }
       .goods-no {
         font-size: 12px;
@@ -773,6 +783,15 @@ export default {
       height: 100%;
     }
   }
+}
+.isfocus{
+  margin-top: 3px;
+ 
+  font-size: 10px;
+  font-family: PingFangSC-Regular;
+  position: relative;
+  left: 127px;
+  bottom: 30px;
 }
 </style>
 

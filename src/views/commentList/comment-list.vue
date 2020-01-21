@@ -62,20 +62,22 @@ export default {
     //页面滚动高度
     window.addEventListener("scroll", that.fixedHead);
   },
-  components: {},
+  components: {
+    Empty
+  },
   data() {
     return {
       goodsId: null,
       value: 5, //评分
       rateList: [],
-      pageNum: 1,
+      pageNum: 0,
       loading: true,
       finished: false,
       isLoading: false, //是否进行上拉加载
       isUp: false,
       isFixed:false,
       isEmpty:false,
-      pageSize:10
+      pageSize:5
     };
   },
   methods: {
@@ -86,14 +88,13 @@ export default {
     //获取评论列表
     getData() {
       let that = this;
-      that
-        .$post(
+      that.$post(
          
-          `api/goods/spuGoodsEvaluatePage/${that.pageSize}/${that.pageNum}`,
+          `api/goods/spuGetGoodsEvaluatePage/?index=${that.pageNum}&size=${that.pageSize}`,
           {
-            customerId: "",
-            goodsId: "8000016ee8689d0f27d5aaf68c6800bd",
-            hideLoading: true,
+            
+            goodsId:  that.goodsId,
+            
             
           }
         )
@@ -101,7 +102,7 @@ export default {
           console.log("-------------获取评论列表--分页--res", res);
           if (res.code == "200") {
             that.isLoading = true;
-            that.rateList = that.rateList.concat(res.context.data);
+            that.rateList = that.rateList.concat(res.context.list);
             that.rateList.map(item=>{
                 item.evaluateTime= getdate("Y-m-d",item.evaluateTime*10)
             })
@@ -113,7 +114,7 @@ export default {
                 item.evaluateTime= getdate("Y-m-d",item.evaluateTime*10)
               })
             }
-            if (res.context.lastPage) {
+            if (res.context.list.length == 0) {
               that.finished = true;
             }
             // 加载状态结束
@@ -162,7 +163,8 @@ export default {
         })();
       }, 100);
     }
-  }
+  },
+  
 };
 </script>
 

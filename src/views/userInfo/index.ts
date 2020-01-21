@@ -1,6 +1,10 @@
 import api from "../../request/api";
 import Vue from "vue";
 import {
+  
+  getdate
+} from '../../until/until'
+import {
   NavBar,
   Uploader,
   Image,
@@ -11,9 +15,11 @@ import {
   Field,
   Button,
   Radio,
-  RadioGroup
+  RadioGroup,
+  DatetimePicker,
+  Popup
 } from "vant";
-Vue.use(NavBar).use(Uploader).use(Image).use(Icon).use(Cell).use(ActionSheet).use(CellGroup).use(Field).use(Button).use(Radio).use(RadioGroup)
+Vue.use(NavBar).use(Uploader).use(Image).use(Icon).use(Cell).use(ActionSheet).use(CellGroup).use(Field).use(Button).use(Radio).use(RadioGroup).use(DatetimePicker).use(Popup)
 
 import Component from 'vue-class-component'
 import {Inject} from 'vue-property-decorator'
@@ -35,7 +41,10 @@ export default class UserInfo extends Vue {
       value1:String= ""
       value2:String= ""
       userinfo:Object= {}
-      radio:number=1
+      currentDate:any= new Date()
+      minDate:any= new Date(1950, 1, 1)
+      dateshow:boolean= false
+      radio:string='1'
       phonenumber:string=''
       actions2:Array<object>= [{
           name: '日本語'
@@ -84,6 +93,23 @@ export default class UserInfo extends Vue {
 
 
     }
+    formatter(type:string, value:any):any {
+      if (type === 'year') {
+        return `${value}年`;
+      } else if (type === 'month') {
+        return `${value}月`
+      }
+      return value;
+    }
+    confirm(value:any) {
+      let that = (this as any)
+
+      let date = getdate('Y-m-d', new Date(value).getTime() / 1000)
+      console.log(date);
+      that.userinfo.birthday = date
+      that.dateshow = false
+      that.savephone()
+    }
     onClickLeft() {
       let that = (this as any)
       that.$router.go(-1);
@@ -112,14 +138,14 @@ export default class UserInfo extends Vue {
           
           api.updateCustomer,
           {
-            sex:that.radio,
-            // birthday: "20190920",
+            sex:that.userinfo.sex,
+            birthday: that.userinfo.birthday,
             falName: that.userinfo.falName,
             falSur: that.userinfo.falSur,
             headImage:that.moren,
             trueName: that.userinfo.trueName,
             trueSur: that.userinfo.trueSur,
-            userName:that.value
+            // userName:that.value
 
 
           }

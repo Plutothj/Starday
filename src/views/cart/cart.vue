@@ -4,17 +4,14 @@
   <div class="cart-body" v-if="!isEmpty">
     <ul class="cart-list">
       <li class="cart-item" v-for="(item,index) in cartList" :key="index">
-        <div class="store-name" @click="chooseStore(item,index)">
-          <label class="checkBox" :for="index">
-              <!-- <input class="check" type="checkbox" :id="index" v-model="item.isChecked" /> -->
+        <div class="store-name" >
               {{item.storeName}}
-            </label>
         </div>
         <div class="store-goods">
           <div class="goods-item" v-for="(itm, idx) in item.goodsList" :key="idx">
-            <div class="checkBox" @click="chooseGoods(itm,idx,index)">
-              <input type="checkbox" v-model="itm.checked" />
-              <!-- <van-checkbox v-model="itm.checked">复选框</van-checkbox> -->
+            <div class="checkBox" >
+              <!-- <input type="checkbox" v-model="itm.checked" @click="chooseGoods(itm,idx,index)"/> -->
+              <van-checkbox v-model="itm.checked" checked-color="rgba(236, 88, 32, 1)" @click="chooseGoods(itm,idx,index)"></van-checkbox>
             </div>
             <div class="goods-container">
               <div class="img-container" @click="goDetail(itm)">
@@ -39,7 +36,7 @@
                 </div>
 
               </div>
-              <div class="favorite" @click="favorite(itm,itm.sku)">{{$t('cart.favorite')}}</div>
+              <!-- <div class="favorite" @click="favorite(itm,itm.sku)">{{$t('cart.favorite')}}</div> -->
             </div>
           </div>
         </div>
@@ -47,10 +44,11 @@
     </ul>
   </div>
   <div class="cart-all" v-if="!isEmpty">
-    <label class="checkBox" for="cartAll">
+    <!-- <label class="checkBox" for="cartAll">
         <input class="check" type="checkbox" id="cartAll" v-model="allChecked" @click="chooseAll" />
         {{$t('cart.chooseAll')}}
-      </label>
+    </label> -->
+    <van-checkbox  v-model="allChecked" checked-color="rgba(236, 88, 32, 1)" @click="chooseAll">{{$t('cart.chooseAll')}}</van-checkbox>
     <div class="all-price" v-if="!isEmpty">
       <div class="price-content">
         <span>{{$t('cart.totle')}}:</span>

@@ -25,6 +25,7 @@ export default class Like extends Vue{
 
       godetail(id:any){
         let that = (this as any)
+        console.log(id)
        window.localStorage.setItem("goodsInfoId", id);
       that.$router.push({
         name:'goods_detail',

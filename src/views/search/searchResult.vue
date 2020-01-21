@@ -21,6 +21,11 @@
           @click="clickChild"
         >
           <van-tab v-for="(v,idx) in tabListChild" :key="idx" :title="v.name">
+            <div slot="title">
+                    {{v.name}}
+                    <van-icon name="arrow-up" :class="{'active':!isUp}" v-if="idx==1||idx==2" />
+                    <van-icon name="arrow-down" :class="{'active':isUp}" v-if="idx==1||idx==2" />
+                  </div>
             <van-list
               class="goods-list"
               :loading-text="$t('supply.loadding')"
@@ -36,7 +41,7 @@
                 </div>
                 <div class="goods-name">{{m.goodsName}}</div>
                 <div class="prices">
-                  <div class="now-price">¥{{m.skuMarketPrice}}</div>
+                  <div class="now-price">¥{{m.marketPrice?m.marketPrice:m.skuMarketPrice}}</div>
                   <!-- <div class="line-price">
                         ¥{{m.goodsInfos[0].marketPrice}}
                         <p class="line"></p>
@@ -57,7 +62,14 @@
             line-width="28px"
             @click="clickChild"
           >
-            <Tab v-for="(v,idx) in tabListChild" :key="idx" :title="v.name"></Tab>
+            <van-tab v-for="(v,idx) in tabListChild" :key="idx" :title="v.name">
+              <div slot="title">
+                    {{v.name}}
+                    <van-icon name="arrow-up" :class="{'active':!isUp}" v-if="idx==1||idx==2" />
+                    <van-icon name="arrow-down" :class="{'active':isUp}" v-if="idx==1||idx==2" />
+                  </div>
+            </van-tab>
+            
           </van-tabs>
         </div>
       </div>
@@ -67,11 +79,11 @@
 
 <script lang='ts'>
 import Vue from "vue";
-import { NavBar, Tab, Tabs, List, Toast } from "vant";
+import { NavBar, Tab, Tabs, List, Toast,Icon } from "vant";
 import api from "../../request/api";
 import ConstKey from "../../until/const_key";
 import Component from 'vue-class-component'
-Vue.use(NavBar).use(Tab).use(Tabs).use(List).use(Toast)
+Vue.use(NavBar).use(Tab).use(Tabs).use(List).use(Toast).use(Icon)
 
 @Component({
 
@@ -84,9 +96,12 @@ export default class SearchResult extends Vue{
       carNum:Number=0
       tabListChild:Object= [
         { name: "総合" },
-        { name: "最新" },
-        { name: "販売量" },
-        { name: "価格" }
+        {
+          name: "价格"
+        },
+        {
+          name: "レビュー数"
+        }
       ]
       goodsList:Array<any> = []
       cateId:String= ""//分类ID
@@ -97,8 +112,8 @@ export default class SearchResult extends Vue{
       finished:Boolean= false
       isLoading:Boolean= false//是否进行上拉加载
       isFixed:Boolean= false
-
-
+      sortOrder:string = 'asc'
+      isUp:boolean = false
        //method
            //页面滚动高度
     fixedHead() {
@@ -123,10 +138,26 @@ export default class SearchResult extends Vue{
           that.sortFlag = 0;
           break;
         case 1:
-          that.sortFlag = 1;
+          if (that.isUp) {
+            that.sortFlag = 1;
+            that.sortOrder = 'asc'
+            that.isUp = false;
+          } else {
+            that.sortFlag = 1;
+            that.sortOrder = 'desc'
+            that.isUp = true;
+          }
           break;
         case 2:
-          that.sortFlag = 4;
+          if (that.isUp) {
+            that.sortFlag = 2;
+            that.sortOrder = 'asc'
+            that.isUp = false;
+          } else {
+            that.sortFlag = 2;
+            that.sortOrder = 'desc'
+            that.isUp = true;
+          }
           break;
         case 3:
           that.sortFlag = 3;
@@ -150,7 +181,7 @@ export default class SearchResult extends Vue{
               keywords:  that.searchValue,
               pageNumber:that. pageNum,
               pageSize: that.pageSize,
-              sortOrder: "asc",
+              sortOrder:that.sortOrder,
               sorted: that.sortFlag,
             }
           )

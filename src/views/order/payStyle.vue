@@ -52,7 +52,8 @@
         </van-cell-group>
       </van-radio-group>
     </div>
-    <div class="pay" @click="goPay">{{$t('supply.pay')}}</div>
+    <div ><van-button class="pay"  size="large"  @click="goPay">{{$t('supply.pay')}}</van-button></div>
+
   </div>
 </template>
 
@@ -70,9 +71,12 @@ import {
   CellGroup,
   Collapse,
   CollapseItem,
-  Toast
+  Toast,
+  Overlay ,
+  Loading ,
+  Button
 } from "vant";
-Vue.use(NavBar).use(Icon).use(RadioGroup).use(Radio).use(Cell).use(CellGroup).use(Collapse).use(CollapseItem).use(Toast)
+Vue.use(NavBar).use(Icon).use(RadioGroup).use(Radio).use(Cell).use(CellGroup).use(Collapse).use(CollapseItem).use(Toast).use(Overlay).use(Loading).use(Button)
 export default {
   name: "payDetail",
   mounted() {
@@ -89,7 +93,7 @@ export default {
     that.orderNumber = that.$route.params.orderTids.orderInfoNumbers != undefined?that.$route.params.orderTids.orderInfoNumbers[0].orderInfoNumber:that.$route.params.orderTids.orderNumber
 
     that.orderTids = that.$route.params.orderTids.orderInfoNumbers != undefined?that.$route.params.orderTids.orderInfoNumbers:that.$route.params.orderTids.orderItem
-
+    that.cardBalance = localStorage.getItem('cardBalance')
     that.price = that.$route.params.price
     that.getMoney();
     that.getCards();
@@ -104,7 +108,7 @@ export default {
       cardList: [],
       payOrderId: null,
       payInfo: {},
-      cardBalance: 0, //可用余额
+      cardBalance: localStorage.getItem('cardBalance'), //可用余额
       isMoneyPay: false, //是否余额支付
       isClick: true,
       cardId:'',
@@ -112,7 +116,9 @@ export default {
       orderNumber: "",
       payOrderId:'',
       orderTids:[],
-      price:''
+      price:'',
+      duration:0
+      
     };
   },
   methods: {
@@ -213,7 +219,13 @@ export default {
               orderNumber: item.orderInfoNumber,
         })
       })
-      
+      Toast.loading({
+        message: 'お支払い中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        overlay:true,
+        duration:that.duration
+      });
       that.$post(
           
           api.payCard,
@@ -256,6 +268,7 @@ export default {
           console.log("-------------余额确认支付--res", res);
           if (res.code == "200") {
             Toast(this.$t("supply.paysuc"));
+            that.duration = 500
             setTimeout(() => {
               that.$router.push("/OrderListShow");
             }, 1000);
@@ -276,6 +289,13 @@ export default {
         obj.orderInfoNumber = item.orderInfoNumber != undefined?item.orderInfoNumber:item.orderNumber
          orderInfoNumbers.push(obj)
       })
+      Toast.loading({
+        message: 'お支払い中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        overlay:true,
+        duration:that.duration
+      });
       that.$post(
           
           api.giftCardPay,
@@ -293,6 +313,7 @@ export default {
           console.log("-------------余额确认支付--res", res);
           if (res.code == "200") {
             Toast(this.$t("supply.paysuc"));
+            that.duration = 500
             setTimeout(() => {
               that.$router.push("/OrderListShow");
             }, 1000);
@@ -314,6 +335,7 @@ export default {
           console.log("------------余额---res", res);
           if (res.code == "200") {
             that.cardBalance = res.context.cardBalance;
+            localStorage.setItem('cardBalance',res.context.cardBalance)
           } else {
             Toast(res.message);
           }

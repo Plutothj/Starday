@@ -80,6 +80,7 @@
         width: 100%;
         background: #fff;
         margin-bottom: 10px;
+        
         .module-name {
           font-size: 17px;
           font-family: PingFangSC-Medium;
@@ -95,6 +96,8 @@
           justify-content: space-between;
           padding: 0 15px;
           box-sizing: border-box;
+          max-height: 580px;
+          overflow: hidden;
           .movement-item {
             text-align: left;
             margin-bottom: 15px; // width: 33.3%;
@@ -133,9 +136,11 @@
               .tips {
                 width: 30px;
                 height: 12px;
+                margin-top: -14px;
                 img {
                   width: 100%;
                   height: 100%;
+                 
                 }
               }
             }
@@ -258,4 +263,92 @@
         color: #fff;
       }
     }
+  }
+  .van-grid{
+    height: 220px;
+  }
+  .van-grid-item--square{
+    height: 110px;
+
+    text-align:center;
+  }
+  .van-grid-item__text{
+    width: 100%;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
+  #hotimg{
+    display: none;
+    ul{
+      display:flex;
+      li:first-child{
+      div{
+        width: 160px;
+        height: 120px;
+      }
+      }
+      li:nth-child(2){
+        padding-left: 25px;
+        div{
+          img{
+            width: 140px;
+            height: 120px;
+            
+            margin-left: 20px;
+          }
+          
+        }
+        
+      };
+      li:nth-child(3){
+        div{
+          img{
+          width: 90px;
+          height: 120px;
+          margin-left: 15px;
+          }
+          
+        }
+        
+      };
+      li:nth-child(4){
+        margin-left: -10px;
+        margin-top: -17px;
+        div{
+          width: 90px;
+          height: 120px;
+          img{
+          width: 90px;
+          height: 120px;
+          }
+        }
+      };
+      li:nth-child(5){
+        margin-left: -10px;
+        margin-top: -17px;
+        div{
+          width: 90px;
+          height: 120px;
+
+          img{
+          width: 90px;
+          height: 120px;
+          }
+        }
+      };
+      li:nth-child(6){
+        margin-right: 50px;
+        margin-top: -17px;
+        div{
+          width: 156px;
+          height: 120px;
+          margin-right: 15px;
+          img{
+          width: 160px;
+          height: 120px;
+          }
+        }
+      };
+    } 
   }

@@ -25,7 +25,7 @@ export default class UserMain extends Vue {
   userinfo: object = {}
   tag: String = ""
   active: String = '3'
- 
+  username:string =''
 
 
 
@@ -64,15 +64,16 @@ export default class UserMain extends Vue {
       this.userinfo = res.context;
 
     });
-    (this as any).$post(
+    // (this as any).$post(
 
-      api.likeGoods, {
-        customerId: localStorage.getItem('accountid')
-      }
-    ).then((res: any) => {
-      console.log(res);
-      this.tag = res.context.length;
-    });
+    //   api.likeGoods, {
+    //     customerId: localStorage.getItem('accountid')
+    //   }
+    // ).then((res: any) => {
+    //   console.log(res);
+    //   this.tag = res.context.length;
+    // });
+    (this as any).username = localStorage.getItem('username')
   }
 
 

@@ -7,7 +7,7 @@
     <div class="found">
         <van-cell-group>
             <van-field v-if="!toggle" v-model="username" class="found_emile" clearable clickable @input="change" />
-            <van-field v-else v-model="valcode" class="found_emile" clearable placeholder="请输入验证码" clickable />
+            <van-field v-else v-model="valcode" class="found_emile" clearable :placeholder="$t('resetpwd.code')" clickable />
 
 
             <van-field v-if="toggle" v-model="password" class="found_emile" clearable :placeholder="$t('resetpwd.inputNew')" clickable />

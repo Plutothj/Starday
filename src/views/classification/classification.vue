@@ -12,13 +12,13 @@
           <div class="img-container">
             <img v-lazy="item.cateImg" alt />
           </div>
-          <div>{{item.cateName}}</div>
+          <div>{{item.cateNameJp}}</div>
         </div>
         <div class="class-content">
           <van-collapse v-model="activeTwo" accordion>
-            <van-collapse-item v-for="(m,idx) in item.goodsCateDTO" :key="idx" :name="idx+1" :title="m.cateName">
+            <van-collapse-item v-for="(m,idx) in item.goodsCateDTO" :key="idx" :name="idx+1" :title="m.cateNameJp">
               <van-cell-group>
-                <van-cell v-for="(v,ind) in m.goodsCateDTO" :key="ind" :title="v.cateName" is-link @click="goThreeClass(v,m)" />
+                <van-cell v-for="(v,ind) in m.goodsCateDTO" :key="ind" :title="v.cateNameJp" is-link @click="goThreeClass(v,m)" />
               </van-cell-group>
             </van-collapse-item>
           </van-collapse>

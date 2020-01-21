@@ -58,15 +58,14 @@ export default class ReturnList extends Vue{
         case "REJECT_REFUND":
           return that.$t("returnList.REJECT_REFUND");
 
-        case "REJECT_RECEIVE":
-          return that.$t("returnList.REJECT_RECEIVE");
-
-        case "REFUND_FAILED":
-          return that.$t("returnList.REFUND_FAILED");
-        case "INIT":
-          return that.$t("returnList.INIT");
+        case 13:
+          return that.$t("returnList.REJECT_REFUND");
+        case 12:
+          return that.$t("returnList.REFUNDED");
+        case 11:
+          return that.$t("returnList.returning");
         case 10:
-          return '申请退款';
+          return that.$t('returnList.returning2' );
         default:
       }
     }

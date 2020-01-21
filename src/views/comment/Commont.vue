@@ -6,10 +6,10 @@
         <img class="shop_img" :src="info.img" alt />
         <span>{{$t('commont.goodsrate')}}</span>
         <van-rate v-model="value" @change="score" />
-        <span>{{$t('commont.serverrate')}}</span>
+        <!-- <span>{{$t('commont.serverrate')}}</span>
         <van-rate v-model="value1" @change="score" />
         <span>{{$t('commont.deliverrate')}}</span>
-        <van-rate v-model="value2" @change="score" />
+        <van-rate v-model="value2" @change="score" /> -->
         <p>{{mark}}</p>
       </div>
 
@@ -69,34 +69,35 @@ export default {
       this.$router.go(-1);
     },
     afterRead(file) {
-      let formfile = new FormData();
-      console.log(file.file.name)
-      
-      formfile.append("uploadFile", file.file);
-      this.$axios
-        .post('common/uploadResource?resourceType=IMAGE', formfile)
+      this.$post(
+          api.upImage,
+          {
+            filedir:file.content,
+            suffix:'commont'
+          }
+        )
         .then(res => {
           console.log(res);
-          this.imginfo.imageName = file.file.name
-          this.imginfo.artworkUrl = res.data.context[0]
-          this.imglist.push(this.imginfo)
+          this.imginfo.returnImg = res.context;
+          this.imglist.push(res.context);
         });
         
     },
     submit() {
       console.log(this.imglist)
       let that = this;
+      let info = that.info
       this.$post(
         api.goodsEvaluate,
         
         {
-          goodsInfoId: "8000016e860e149d3572526fcc748670",
-          orderNumber: "3191217152841138",
-          orderId: "683",
-          customerId: "8000016ed3068c7a06ecd06680700439",
-          goodsImg: "https://sanyi-images.oss-cn-hongkong.aliyuncs.com/refund/20191217154048/8000016f6dcd657612878050d96b3ddb.jpeg",
-          evaluateScore: 5,
-          evaluateContent: "323213123",
+          goodsInfoId:info.goodsInfoId ,
+          orderNumber: info.orderInfoNumber,
+          orderId: info.orderId,
+          customerId: localStorage.getItem('accountid'),
+          artworkUrl: that.imglist.toString(),
+          evaluateScore: that.value,
+          evaluateContent: that.message,
           
         }
       ).then(res=>{

@@ -5,15 +5,20 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:dev": "vue-cli-service build --mode development",  
+    "build:prod": "vue-cli-service build --mode production", 
+    "build:test": "vue-cli-service build --mode test"
   },
   "dependencies": {
     "autoprefixer": "^9.7.3",
     "axios": "^0.19.0",
     "core-js": "^3.4.3",
     "file-loader": "^5.0.2",
+    "prerender-spa-plugin": "^3.4.0",
     "v-coupon": "^0.3.8",
     "vant": "^2.2.15",
+    "vconsole": "^3.3.4",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-i18n": "^8.15.1",

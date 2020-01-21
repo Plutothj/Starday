@@ -16,13 +16,22 @@
       <van-field v-model="buyMan" :label="$t('order.consignee')" disabled />
       <!-- 优惠券单元格 -->
       <van-coupon-cell    @click="showList = true" />
-      <van-cell :title="$t('order.markrt')" is-link arrow-direction="down" value="使用" @click="ordermarkrt"/>
+      <van-cell :title="$t('order.markrt')" is-link arrow-direction="down" :value="marketingname" @click="ordermarkrt"/>
       <!-- 优惠券列表 -->
       <van-popup v-model="showList" position="bottom">
         <van-coupon-list :show-exchange-bar='false' :coupons="coupons" :chosen-coupon="chosenCoupon" :disabled-coupons="disabledCoupons" @change="onChange" @exchange="onExchange" />
       </van-popup>
-      <van-field  v-model="integral" :disabled="integral == 0"  :max='integral' :min='0' type='number' @input='watchvalue' :label="$t('order.ingetral')"  />
-
+      <van-field  
+        v-model="integralvalue"  
+        right-icon="question-o"
+        :placeholder="$t('newAdd.useingrtal')"
+        @click-right-icon="$toast('ポイントは商品の合計金額の最大99％を差し引くことができます')"   
+        :max='Math.floor(Number(goodsTotalPrice)*0.99)' 
+        :min='0' 
+        type='number' 
+        @input='watchvalue' 
+        :label="$t('order.ingetral')"  />
+        <p class="integral2">{{$t('user_info.integral')+':'+integral2+'.'+ 'ポイントは商品の合計金額の最大99％を差し引くことができます。'}}</p>
     </van-cell-group>
     <van-popup
         v-model="show"
@@ -31,12 +40,12 @@
     >
     <van-radio-group v-model="radio">
       <van-cell-group>
-        <van-cell title="不使用优惠" clickable @click="delMarket">
+        <van-cell :title="$t('newAdd.unusediscount')" clickable @click="delMarket">
           
            <van-radio slot="right-icon" name="0" />
         </van-cell>
 
-        <van-cell :title="item.marketingName" clickable @click="checkMarket(item.marketingId,index)" v-for="(item,index) in markrtList" :key="index">
+        <van-cell :title="item.marketingName" clickable @click="checkMarket(item,index)" v-for="(item,index) in markrtList" :key="index">
           <van-radio slot="right-icon" :name="index+1" />
         </van-cell>
         
@@ -66,7 +75,7 @@
                 
               </div>
               <select class="select"  name="public-choice"  @change="getCouponSelected(idx,index,$event,item)"> 
-                  <option value="" >不使用优惠</option>
+                  <option value="" >{{$t('newAdd.unusediscount')}}</option>
                   <option :value="ite.marketingId" v-for="(ite,i) in item.marketingDTOList" :key="i">{{ite.marketingName}}</option>
               </select>
               <div class="price">￥{{item.sku.marketPrice}}</div>
@@ -128,9 +137,10 @@ import {
   DropdownMenu, 
   DropdownItem,
   RadioGroup, 
-  Radio
+  Radio,
+  Notify 
 } from "vant";
-Vue.use(NavBar).use(Field).use(SubmitBar).use(Cell).use(CellGroup).use(Toast).use(CouponCell).use(CouponList).use(Popup).use(DropdownMenu).use(DropdownItem)
+Vue.use(NavBar).use(Field).use(SubmitBar).use(Cell).use(CellGroup).use(Toast).use(CouponCell).use(CouponList).use(Popup).use(DropdownMenu).use(DropdownItem).use(Notify)
 Vue.use(RadioGroup);
 Vue.use(Radio);
 
@@ -146,7 +156,7 @@ export default {
     if (this.$route.params.info !== undefined) {
       localStorage.setItem('orderlist', JSON.stringify(this.$route.params.info.context.items))
       localStorage.setItem('freight', this.$route.params.info.context.freight)
-      localStorage.setItem('integral', this.$route.params.info.context.integral)
+      // localStorage.setItem('integral', this.$route.params.info.context.integral)
       localStorage.setItem('amount', this.$route.params.info.context.amount)
       localStorage.setItem('type', this.$route.params.type)
       that.orderList = this.$route.params.info.context.items
@@ -221,8 +231,9 @@ export default {
     that.getCoupon();
     that.getDelCoupon()
     that.getDeliveryPrice();
+    that.getIntegral()
     that.priceInfo.deliveryPrice = localStorage.getItem('freight')=='null'?0:localStorage.getItem('freight')
-    that.integral = localStorage.getItem('integral')=='null'?0:localStorage.getItem('integral')
+    // that.integral = localStorage.getItem('integral')=='null'?0:localStorage.getItem('integral')
     that.dealTotalPrice = localStorage.getItem('amount')
     //判断设备app||h5
     // if (that.checkIsH5Plus()) {
@@ -278,7 +289,10 @@ export default {
       markrtList:[],
       markrtid:null,
       marketSelected:[],
-      radio:[]
+      radio:[],
+      integralvalue:'',
+      integral2:'',
+      marketingname:'使用'
     };
   },
   
@@ -289,9 +303,25 @@ export default {
   methods: {
     watchvalue(value){
       let that = this
-      if (value > localStorage.getItem('integral')){
-        that.integral = localStorage.getItem('integral')
-      }
+      
+      // let price =  parseInt(that.dealTotalPrice)
+      // console.log(value,that.integral)
+      // if (value>parseInt(that.integral)||value>price) {
+      //   Notify({ type: 'warning', message: '输入额不能大于积分或者应付金额' });
+      //   that.integralvalue = ''
+      // }else {
+
+        
+        if (value == '') {
+          that.integral = 0
+        }else if(value !== ''&& value<=Math.floor(that.goodsTotalPrice*0.99)){
+          that.integral = value
+        }else{
+           Notify({ type: 'warning', message: 'ポイントは商品の合計金額の最大99％を差し引くことができます。' });
+        }
+        that.computePrice(that.marketSelected)
+      
+      
     },
     onChange(index) { 
       let that = this
@@ -326,7 +356,12 @@ export default {
       }
     ).then(res=>{
       
-      that.dealTotalPrice= res.context.amount
+      
+      if (res.code == '200') {
+        that.dealTotalPrice= res.context.amount
+      }else{
+        Notify({ type: 'warning', message: res.message });
+      }
       
     })
     },
@@ -448,14 +483,18 @@ export default {
           }
         });
     },
-    checkMarket(id,index){
+    checkMarket(item,index){
     this.radio = index+1
-    this.markrtid = id
-    
+    this.markrtid = item.marketingId
+    this.marketingname = item.marketingName
     this.computePrice(this.marketSelected)
+    this.show = false;
+    
     },
     delMarket(){
     this.markrtid = ''
+    this.marketingname = ''
+    this.show = false;
     this.computePrice(this.marketSelected)
     },
     getCoupon() {
@@ -519,26 +558,39 @@ export default {
         
       });
     },
+    getIntegral(){
+      let that = this
+      that.$post(
+
+        api.getAllUserInfo
+      )
+      .then((res) => {
+        console.log('---------', res);
+        that.integral2 = res.context.integral;
+        
+      })
+    },
 
 
     // 提交订单
     submitOrder: function() {
       console.log("-------提交订单");
+      
       let that = this;
       //处理提交订单参数
-      that.orderList.map(e => {
-        console.log('tag', e)
-        let obj  = {}
+      // that.orderList.map(e => {
+      //   console.log('tag', e)
+      //   let obj  = {}
         
-        obj.goodsInfoId = e.skuId
-        obj.skuVal = e.skuVal
+      //   obj.goodsInfoId = e.skuId
+      //   obj.skuVal = e.skuVal
         
-        obj.number = e.number
-        obj.couponId = ''
-        obj.marketingId = ''
-        that.subOrderInfo.goodsOneDiscountsList.push(obj)
-      });
-      
+      //   obj.number = e.number
+      //   obj.couponId = ''
+      //   obj.marketingId = ''
+      //   that.subOrderInfo.goodsOneDiscountsList.push(obj)
+      // });
+      that.subOrderInfo.goodsOneDiscountsList=that.marketSelected
       that.subOrderInfo.source = 3
       that.subOrderInfo.addressId =  that.addressInfo.id
       that.subOrderInfo.integral = that.integral
@@ -548,7 +600,8 @@ export default {
       that.subOrderInfo.couponAllId = that.couponid
       that.subOrderInfo.shopType = localStorage.getItem('type') == '1'?1:2 
       that.subOrderInfo.marketingAllId =that.markrtid?that.markrtid:''
-      that.$post(
+      if (that.subOrderInfo.addressDetail) {
+        that.$post(
           
           api.subOrder,
           that.subOrderInfo
@@ -580,9 +633,13 @@ export default {
               
             }
           } else {
-            Toast(res.message);
+            Toast(that.$t('newAdd.completeinfo'));
           }
         });
+      }else {
+         Toast(that.$t('order.inpadress'))
+      }
+      
     }
   }
 };
@@ -780,6 +837,13 @@ export default {
   font-family: PingFangSC-Regular;
   font-weight: 400;
   color: rgba(153, 153, 153, 1);
+}
+.integral2{
+  font-size: 10px;
+  font-family: PingFangSC-Regular;
+  padding-left: 16px;
+  color: rgba(153, 153, 153, 1);
+  padding-bottom: 5px;
 }
 </style>
 

@@ -53,6 +53,7 @@ export default class Setting extends Vue{
       ).then((res:any)=>{
         if (res.code == '200') {
           that.$router.push("/login");
+          localStorage.removeItem('accountid')
         }
       })
       

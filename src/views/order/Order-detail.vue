@@ -6,23 +6,23 @@
     </div> -->
     <div class="order_delive" :style="top">
       <p>
-        <van-icon name="../../../static/img/peisong.png" />
-        {{delinfo}}
+        <img src="../../../static/img/peisong.png"  class="deliveimg"/>
+        {{deliverinfostate}}
       </p>
-      <p>{{$t('supply.p2')}}{{delivertime}}</p>
+      <!-- <p>{{$t('supply.p2')}}{{delivertime}}</p> -->
     </div>
     <div>
-      <van-panel :title="$t('order.order')">
+      <van-panel :title="$t('order.orderinfo')">
         <div>{{$t('order.orderdate')}}{{ordertime}}</div>
         <div>{{$t('order.orderNo')}}{{orderid}}</div>
         <div>{{$t('order.orderprice')}}￥{{totalprice}}</div>
       </van-panel>
     </div>
     <div class="shop">
-      <p>
+      <!-- <p>
         {{storeName}}
         <van-icon name="arrow" />
-      </p>
+      </p> -->
       <van-card
         :num="item.number"
         :price="item.amount"
@@ -41,15 +41,18 @@
          
         </div>
       </van-card>
+
     </div>
+   
+
     <van-panel :title="$t('supply.paytype')">
-      <div>{{$t('order.card')}}</div>
-      <div></div>
+      <div>{{payType}}</div>
+      
     </van-panel>
     <van-panel :title="$t('supply.deliverinfo')">
-      <div>{{consignee.name}}</div>
-      <div>{{consignee.detailAddress}}</div>
-      <div>{{consignee.phone}}</div>
+      <div>{{consignee.realName}}</div>
+      <div>{{consignee.address+" "+consignee.deliveryAddress}}</div>
+      <div>{{consignee.mobile}}</div>
       <div>{{$t('supply.delivernumber')}}{{deliverNum}}</div>
       <div>{{$t('supply.delivername')}}{{deliverName}}</div>
     </van-panel>
@@ -66,11 +69,22 @@
         {{$t('order.discount')}}
         <span>-￥{{tradePrice.discountAmount}}</span>
       </div>
+      <div>
+        {{$t('order.ingetral')}}
+        <span>{{"-￥"+tradePrice.ingetral}}</span>
+      </div>
       <div style="margin-bottom:30px">
         {{$t('order.paynumber')}}
         <span>￥{{tradePrice.payAmount}}</span>
       </div>
-       <van-button size="normal" @click="cancel" v-if="payState=='NOT_PAID' && (flowState == 'AUDIT' || flowState == 'INIT' || flowState == 'REMEDY')" class="button" :style='buttonstyle'>{{$t('order.cancelorder')}}</van-button>
+       <van-button size="normal"  @click="returnGoods" v-if="flowState=='8'||flowState=='7' || flowState == '5'" class="button" :style='buttonstyle'>{{$t('user_main.return')}}</van-button>
+        <!-- <van-button
+        size="small "
+        @click="returnGoods"
+        class="returnGoods"
+        v-if="item.state == 7||item.state == 5"
+        >{{$t('user_main.return')}}
+        </van-button> -->
        <van-button size="normal" @click='goPay' v-if="payState=='NOT_PAID' && (flowState == 'AUDIT' || flowState == 'INIT' || flowState == 'REMEDY')" >{{$t('order.gopay')}}</van-button>
     </van-panel>
   </div>
@@ -99,7 +113,7 @@ export default {
   data() {
     return {
       top: 48,
-      delinfo: "",
+      deliverinfo: "",
       show: true,
       storeName: "",
       tradeItems: [],
@@ -117,7 +131,10 @@ export default {
       deliverName: "",
       payOrderId:"",
       price:'',
-      buttonstyle:{}
+      buttonstyle:{},
+      deliverinfostate:'',
+      payType:'',
+      integral:''
     };
   },
   methods: {
@@ -135,6 +152,26 @@ export default {
           orderTids: orderTids
         }
       });
+    },
+    deliverinfostatus(status){
+      let that = this
+      switch(status) {
+        case 0:
+          return that.deliverinfostate = that.$t('order.nodeliver')
+          break;
+        case 1:
+          return that.deliverinfostate = that.$t('supply.delivered')
+          break;
+        case 2:
+          return that.deliverinfostate = '在途中'
+          break;
+        case 3:
+          return that.deliverinfostate = that.$t('order.confirmed')
+          break;
+        case 4:
+          return that.deliverinfostate = that.$t('returnList.VOID')
+          break;
+      }
     },
     onClickLeft() {
       this.$router.go(-1);
@@ -167,6 +204,39 @@ export default {
           that.active = 3;
         }
       });
+    },
+    returnGoods(){
+      let that = this;
+      event.stopPropagation();
+      
+      let orderId = localStorage.getItem('orderId');
+      let orderNumber = localStorage.getItem('orderNumber')
+      that.$fetch(
+        
+        api.returnable,
+        {
+          orderId:orderId,
+
+          orderInfoNumber:orderNumber
+        }
+
+      ).then((res) => {
+        console.log(res);
+        if (res.code == '200') {
+          // that.$toast(res.message);
+          that.reload();
+          that.$router.push({
+            path: "/returnGoods",
+            query: {
+              orderId: orderId,
+              orderInfoNumber:orderNumber
+            }
+          });
+        }else{
+          that.$toast(res.message);
+        }
+        
+      });
     }
   },
   mounted() {
@@ -176,8 +246,10 @@ export default {
       }
     }
     console.log(this.$route.query.id);
-    let orderId = this.$route.query.id.order.id;
-    let orderNumber = this.$route.query.id.orderNumber
+    localStorage.setItem('orderId',this.$route.query.id.order.id)
+    localStorage.setItem('orderNumber',this.$route.query.id.orderNumber)
+    let orderId = localStorage.getItem('orderId');
+    let orderNumber = localStorage.getItem('orderNumber')
     let that = this;
 
     
@@ -193,9 +265,11 @@ export default {
       let orderInfoDTO = res.context.orderInfoDTO
       that.tradeItems = res.context.orderInfoDTO.orderItem
       that.deliverNum = orderInfoDTO.express
-        ? orderInfoDTO.express
+        ? orderInfoDTO.express.split('-')[0]
         : "";
-      // that.deliverName = res.data.context.tradeDelivers[0]
+      that.deliverName = orderInfoDTO.express
+        ? orderInfoDTO.express.split('-')[1]
+        : "";
       //   ? res.data.context.tradeDelivers[0].logistics.logisticCompanyName
       //   : "";
       // that.delivertime = res.data.context.tradeDelivers[0]
@@ -208,18 +282,22 @@ export default {
       that.orderid = orderDTO.orderNumber;
       that.totalprice = orderDTO.productAmount;
       // that.payState = res.data.context.tradeState.payState;
-      that.flowState = orderDTO.state
-      // that.consignee = res.data.context.consignee;
+      that.flowState = orderInfoDTO.state
+      that.consignee =JSON.parse(orderInfoDTO.order.address) ;
       that.tradePrice = orderDTO;
       that.tradePrice.discountAmount = orderInfoDTO.discountAmount
       that.tradePrice.freightAmount = orderInfoDTO.freightAmount
-      that.delinfo =orderInfoDTO.express?orderInfoDTO.express:that.$t('order.nodeliver');
+      that.tradePrice.ingetral = res.context.orderInfoDTO.integral
+      that.deliverinfo =orderInfoDTO.express?orderInfoDTO.express:that.$t('order.nodeliver');
+      console.log("+++++++",that.tradePrice)
+      that.deliverinfostatus(orderInfoDTO.expressState)
+      that.payType = orderInfoDTO.payChannel==3?that.$t('order.moneyPay'):that.$t('order.card')
       // that.price = res.data.context.tradeItems[0].price
       // that.payOrderId=res.data.context.payOrderId;
       // if (res.data.context.tradeState.deliverStatus == "NOT_YET_SHIPPED") {
-      //   that.delinfo = that.$t('order.nodeliver');
+      //   that.deliverinfo = that.$t('order.nodeliver');
       // } else if (res.data.context.tradeState.deliverStatus == "SHIPPED") {
-      //   that.delinfo = that.$t('order.delivered');
+      //   that.deliverinfo = that.$t('order.delivered');
       //   that.show = false;
       //   that.top = "margin-top:48px";
       // }
@@ -319,8 +397,12 @@ export default {
   color: rgba(51, 51, 51, 1);
 }
 .button{
-  
+  width: 192px;
   margin-right: 30px;
   margin-bottom: 50px;
+}
+.deliveimg{
+  width: 25px;
+  height: 20px;
 }
 </style>

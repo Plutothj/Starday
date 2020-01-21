@@ -9,11 +9,12 @@ import {
   Grid,
   GridItem,
   Image,
+  Sticky,
 } from "vant";
 import navFoot from "../../components/footer.vue";
 import api from "../../request/api";
 import ConstKey from "../../until/const_key"
-Vue.use(Search).use(Swipe).use(SwipeItem).use(Toast).use(Icon).use(Loading).use(Grid).use(GridItem).use(Image)
+Vue.use(Search).use(Swipe).use(SwipeItem).use(Toast).use(Icon).use(Loading).use(Grid).use(GridItem).use(Image).use(Sticky)
 import Component from 'vue-class-component'
 import { Prop } from "vue-property-decorator"
 import  img1 from '../../assets/images/index/logo.png'
@@ -59,7 +60,7 @@ export default class Index extends Vue {
   mounted() {
     let that = (this as any);
     that.getBanner();
-
+    that.getMarketingName()
     // (that as any).getsubGoodsList();
 
     //页面滚动高度
@@ -71,8 +72,8 @@ export default class Index extends Vue {
       that.isClose = false;
     }
     that.$fetch(api.HomeCate).then((res:any) => {
-      console.log(res.context.slice(1, 9))
-      this.shopList = res.context.slice(1, 9)
+      console.log(res.context.slice(0,8))
+      this.shopList = res.context.slice(0,8)
     })
 
     that.getData()
@@ -80,6 +81,19 @@ export default class Index extends Vue {
     
    
   }
+
+  beforeRouteLeave(to:any,from:any,next:any){
+        
+     
+          if(to.path == '/classification'||to.path == '/cart'||to.path == '/usermain'||to.path == '/activity'){
+                //缓存
+              from.meta.keepAlive = true;
+          }else{
+                //不缓存
+              from.meta.keepAlive = false ;
+          }
+          next()
+   }
   //method
       getData():any {
       let that = (this as any)
@@ -94,15 +108,50 @@ export default class Index extends Vue {
             that.bannerList.push(...item.components.details)
             
           } else {
-            
+            item.components.indexId = item.indexId
             that.textarr.push(item.components)
           }
         })
+        
+        
+        that.textarr.map((item:any,index:any)=>{
+          item.details.map((itm:any,ind:any)=>{
+            if (itm.goods == null) {
+              item.details.splice(ind,1)
+              console.log(">>>>>>>>",item)
+            }
+          })
+         
+        })
+        console.log("+++++++++++++++",that.textarr)
         that.subGoodsList = that.textarr
         // .slice(1,that.textarr.length+1)
         // that.activityList=that.textarr[0]
         // console.log('<<<<<<<<<', that.textarr);
       })
+    }
+    toggleCate(item:any){
+      let that  = (this as any)
+      console.log(item)
+      let str:Array<string> = []
+      item.goodsCateDTO.map((item:any)=>{
+        item.goodsCateDTO.map((itm:any)=>{
+          str.push(itm.cateId)
+        })
+      })
+      
+      console.log(str)
+      that.$router.push({
+        name:'threeClass',
+        params:{
+          list:str,
+          cateName:item.cateNameJp
+        }
+      })
+      let tartype:string = '1'
+      localStorage.setItem('allCateid',str.toString())
+      localStorage.setItem('threeTitle',item.cateNameJp)
+      localStorage.setItem('taptype',tartype)
     }
 
     // 点击搜索
@@ -124,7 +173,21 @@ export default class Index extends Vue {
 
     //专题商品查看更多
     moreMove(item:any){
-      window.location.href = item.sublink;
+      // window.location.href = item.sublink;
+      console.log(item)
+      let that = (this as any)
+      
+      that.$router.push({
+        name:'viewMore',
+        params:{
+          type:item.type,
+          indexId:item.indexId,
+          titleJp:item.titleJp,
+         
+        }
+      })
+      
+
     }
 
         //回到顶部
@@ -174,6 +237,69 @@ export default class Index extends Vue {
       });
 
 
+    }
+    getMarketingName(){
+      let that = (this as any)
+      that.$fetch(
+        api.getMarketingName
+      ).then((res:any) => {
+
+        // that.activityList=that.textarr[0]
+        console.log('<<<<<<<<<', res);
+        console.log('<<<<<<<<<', that.bannerList);
+        let obj:any = {}
+        res.context.map((item:any)=>{
+          if (item.operationType == 0) {
+            obj.img = item.activityImg
+            obj.marketingType = item.marketingType
+            obj.marketingId = item.marketingId
+            obj.marketingName = item.marketingName
+            obj.operationType = item.operationType
+            that.bannerList.push(obj)
+          }
+          
+        })
+      })
+    }
+    tapBanner(item:any){
+      console.log(item)
+      let that = (this as any)
+      // that.$post(
+      //   api.getMarketingGoods,
+      //   {
+      //     "marketingType":item.marketingType,
+      //     "pageSize":24,
+      //     "pageNumber":1,
+      //     "marketingId":item.marketingId
+      //   }
+      // ).then((res:any) => {
+
+      //   // that.activityList=that.textarr[0]
+      //   console.log('<<<<<<<<<>>>>>>>>>>', res);
+      //   if (res.code == 200) {
+      //     that.$router.push({
+      //       name:'oldman',
+      //       params:{
+      //         imgUrl:item.img,
+      //         subtitle:item.marketingName,
+      //         goodslist:res.context.data
+      //       }
+      //     })
+      //   }
+        
+      // })
+      if (item.operationType == 0 ) {
+        that.$router.push({
+          name:'oldman',
+          params:{
+            marketingType:item.marketingType,
+            marketingId:item.marketingId,
+            imgUrl:item.img,
+            subtitle:item.marketingName,
+          }
+        })
+      }
+      
     }
 
 

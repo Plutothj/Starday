@@ -5,11 +5,11 @@
   <div class="content">
     <h1>{{item.valueDesc+'円'}}</h1>
     <p class="desc">{{item.condition}}</p>
-    <p class="name">{{'优惠券名称:'+item.name}}</p>
-    <p class="type">{{'类型:'+item.description}}</p>
-    <p class="date">{{'日期:'+item.startAt+'-'+item.endAt}}</p>
+    <p class="name">{{$t('coupon.name')+item.name}}</p>
+    <p class="type">{{$t('coupon.type')+item.description}}</p>
+    <p class="date">{{$t('coupon.date')+item.startAt+'-'+item.endAt}}</p>
     <p class="button">
-<van-button round  plain size='small'  color='rgba(237, 88, 33, 1)' @click="receive(item.id)">领取</van-button>
+<van-button round  plain size='small' :disabled="item.type"  color='rgba(237, 88, 33, 1)' @click="receive(item.id)">{{item.type?$t('coupon.isUsed'):$t('coupon.flow')}}</van-button>
     </p>
     
   </div>
@@ -72,6 +72,7 @@ receive(id:string){
       Toast(res.message)
     }else if (res.code=='200') {
       that.reload()
+      that.$router.go(0)
       Toast(res.context)
       
     }

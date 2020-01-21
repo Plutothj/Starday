@@ -3,28 +3,28 @@
     <van-nav-bar class="nav1" :title="$t('returnDetail.returndetail')" left-arrow @click-left="onClickLeft" />
     <div class="returndetail">
       <van-panel :title="$t('returnDetail.returnInfo')">
-        <div> {{$t('returnDetail.returnStatus')}} {{status?status:$t('returnDetail.null')}} </div>
+        <div> {{$t('returnDetail.returnStatus')}}{{isstatus("11")}} </div>
         <div>{{$t('returnDetail.returnRes')}}{{reason[4]}}</div>
-        <div>{{$t('returnDetail.orderNo')}}{{contenxt.orderInfoDTO.forderNumber}}</div>
-        <div>{{$t('returnDetail.returnNo')}}{{contenxt.orderInfoDTO.returnOrderItem[0].returnOrderNumber}}</div>
+        <div>{{$t('returnDetail.orderNo')+ordernumber}}</div>
+        <div>{{$t('returnDetail.returnNo')}}{{context.orderInfoDTO.returnOrderItem[0].returnOrderNumber}}</div>
         <div>{{$t('returnDetail.returnTime')}}{{time}}</div>
       </van-panel>
-      <van-panel :title="contenxt.orderInfoDTO.storeName"  >
+      <van-panel :title="context.orderInfoDTO.storeName"  >
         <van-card
           :num="item.number"
           :price="item.returnAmount"
           :desc="item.goodsSkuVal"
           :title="item.goodsInfoName"
           :thumb="item.goodsInfoImg"
-          v-for="(item,index) in contenxt.orderInfoDTO.returnOrderItem"
+          v-for="(item,index) in context.orderInfoDTO.returnOrderItem"
           :key="index"
         />
       </van-panel>
 
       <van-panel :title="$t('supply.serverinfo')" class="server">
-        <div>{{$t('returnDetail.service')}}{{contenxt.returnReason?reason[contenxt.returnOrderItem[0].returnReason]:$t('returnDetail.null')}}</div>
-        <div>{{$t('returnDetail.description')}}{{contenxt.description}}</div>
-        <div>{{$t('returnDetail.returnPrice')}}￥{{contenxt.orderInfoDTO.amount}}</div>
+        <div>{{$t('returnDetail.service')}}{{context.orderInfoDTO.returnOrderItem[0].refuseCause}}</div>
+        <div>{{$t('returnDetail.description')}}{{context.description}}</div>
+        <div>{{$t('returnDetail.returnPrice')}}￥{{context.orderInfoDTO.amount}}</div>
       </van-panel>
       <!-- <van-cell-group>
         <van-cell title="应返积分" :value="contenxt.returnPoints.applyPoints" />
@@ -48,45 +48,32 @@ import Component from 'vue-class-component'
 })
 export default class ReturnDetail extends Vue{
 
-      contenxt:object= {}
+      context:any= {}
       status:string|number= ""
       time:string|number=''
       storeName:string =''
       reason:Array<any> = []
       index:number =0
-
+      state:any = null
+      ordernumber:any = ''
     isstatus(status:string|number){
       let that = (this as any)
+      console.log('aaaaa')
       switch (status) {
-        case 10:
-          that.status = that.$t('returnList.returning');
+        case '10':
+          return that.$t('returnList.returning');
           break;
-        case 11:
-          that.status = that.$t('returnList.returning');
+        case '11':
+          return that.$t('returnList.returning');
           break;
-        case 12:
-          that.status = that.$t('returnList.REFUNDED');
+        case '12':
+          return that.$t('returnList.REFUNDED');
           break;
-        case 13:
-          that.status = that.$t('returnList.REJECT_REFUND');
+        case '13':
+          return that.$t('returnList.REJECT_REFUND');
           break;
-        case 14:
-          that.status = that.$t('returnList.REFUND_FAILED');
-          break;
-        case "REFUNDED":
-          that.status = that.$t('returnList.REFUNDED');
-          break;
-        case "COMPLETED":
-          that.status = that.$t('returnList.COMPLETED');
-          break;
-        case "REJECT_REFUND":
-          that.status = that.$t('returnList.REJECT_REFUND');
-          break;
-        case "REJECT_RECEIVE":
-          that.status = that.$t('returnList.REJECT_RECEIVE');
-          break;
-        case "REFUND_FAILED":
-          that.status = that.$t('returnList.REFUND_FAILED');
+        case '14':
+          return that.$t('returnList.REFUND_FAILED');
           break;
         default:
           break;
@@ -108,11 +95,14 @@ export default class ReturnDetail extends Vue{
       }
     ).then((res:any) => {
       console.log("--------------------returndetail", res);
-      this.contenxt = res.context;
-      this.time = gettime(res.context.orderInfoDTO.applyRefundTime) 
-      this.index=res.contenxt.orderInfoDTO.returnOrderItem[0].returnReason
-      this.isstatus(res.context.orderInfoDTO.state)
-      console.log('>>>>>>>>>>>>>>>>>>>>', this.index)
+      that.context = res.context;
+      that.time = gettime(that.context.orderInfoDTO.applyRefundTime) 
+      that.index=that.context.orderInfoDTO.returnOrderItem[0].returnReason
+      that.ordernumber = that.context.orderInfoDTO.orderNumber
+      
+      that.state=that.context.orderInfoDTO.state
+      that.isstatus( that.state)
+      console.log('>>>>>>>>>>>>>>>>>>>>',res.context.orderInfoDTO.orderNumber)
     });
     }
     getReason(){

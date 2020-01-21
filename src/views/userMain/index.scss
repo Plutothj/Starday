@@ -1,42 +1,58 @@
 .head {
     background-color: #fff;
     overflow: hidden;
-    display: flex;
-  }
-  
-  .head_img {
-    float: left;
-    margin-top: 45px;
-    margin-left: 15px;
-  }
-  
-  .head_name {
-    float: left;
-    margin-top: 60px;
-    margin-left: 20px;
-    height: 28px;
-    font-size: 20px;
-    font-family: PingFangSC-Medium;
-    font-weight: 500;
-    color: rgba(51, 51, 51, 1);
-    line-height: 28px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 230px;
-  }
-  
-  .head {
-    span {
-      
-      
-      margin-left: 10px;
-      
+    height: 150px;
+    a{
+      padding-top: 30px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      .head_img{
+        margin-left: 20px;
+      }
+      .head_name {
+       
+        padding-left: 30px;
+        font-size: 20px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        color: rgba(51, 51, 51, 1);
+        
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 230px;
+      }
+      .integral{
+        padding-left: 30px;
+        // margin-top: -10px;
+        font-size: 10px;
+        font-family: PingFangSC-Medium;
+        color: rgba(51, 51, 51, 1);
+        // text-align: center;
+        // padding-right: 48px;
+        
+       }
     }
+    
   }
+  
+  
+  
+  
+  
+  // .head {
+  //   span {
+      
+      
+  //     margin-left: 10px;
+      
+  //   }
+  // }
   
   .menu_user {
     margin-top: 12px; //height: 302px;
+    margin-bottom: 70px;
     .van-van-cell {
       height: 54px;
       text-align: left;
@@ -48,6 +64,7 @@
   
   .menu_info {
     margin-top: 12px;
+    margin-bottom: 70px;
     .van-van-cell {
       text-align: left;
     }
@@ -60,8 +77,14 @@
   }
   
   .setting {
-    font-size: 18px;
+    font-size: 22px;
     position: absolute;
     top: 35px;
     right: 20px;
   }
+ .van-cell__title{
+  .van-tag{
+    margin-left:20px;
+  }
+ }
+ 

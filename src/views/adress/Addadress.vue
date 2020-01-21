@@ -15,7 +15,9 @@
       <van-field
         v-model="number"
         class="reg_emile L0"
+        type="number"
         clearable
+        maxlength=7
         :placeholder="$t('address.postalCode')"
         clickable
         :error-message="errormsg"
@@ -29,7 +31,7 @@
         :placeholder="str"
         right-icon="arrow-down"
         clickable
-        @click-right-icon="toggle"
+        @click="toggle"
         :label="$t('address.local')"
       />
       <van-field
@@ -48,6 +50,8 @@
         clearable
         :placeholder="$t('address.phonenum')"
         clickable
+        type="number"
+        maxlength=11
         :error-message="errormsg"
         @input="Regemil"
         :label="$t('address.phone')"
@@ -92,6 +96,7 @@ export default class Addcard extends Vue{
       areaList:any= AreaList
       areaid:string= ""
       cityid:string= ""
+      provinceId:string = ""
       customerId:string= ""
       id:string=''
 
@@ -106,24 +111,32 @@ export default class Addcard extends Vue{
       this.str = "";
     }
     tap(e:any) {
-      
+      console.log(e)
       this.str = "";
-      this.str += e[0].name + " "+ e[1].name
+      let city:string = ''
+      if(e[1].name ==e[2].name ){
+        city = e[1].name
+      }else{
+        city = e[1].name + " " +e[2].name
+      }
+      this.str += e[0].name + " "+ city
       this.show = false;
-      this.areaid = e[0].code;
-      this.cityid = e[1].code;
+      this.areaid = e[1].code;
+      this.cityid = e[2].code;
+      this.provinceId =e[0].code
     }
     addadress() {
       let that = this as any
       let emile= that.number.slice(0,3)+'-'+that.number.slice(3,7)
       console.log(emile)
-      that.$post(
+      if (emile.length==8&&that.phone.length>=6&&that.phone.length<=15&&that.name.length&&that.number.length&&that.detailadress.length) {
+        that.$post(
         api.updateAdress,
         {
           
 
           accountId: that.id,
-          address: this.str,
+          address: that.str,
           areaId: that.areaid,
           cityId: that.cityid,
           def: that.checked,
@@ -131,7 +144,7 @@ export default class Addcard extends Vue{
           id: "",
           mobile: that.phone,
           postcode: emile,
-          provinceId: 1,
+          provinceId: that.provinceId,
           realName: that.name
         }
       ).then((res:any)=>{
@@ -140,9 +153,13 @@ export default class Addcard extends Vue{
           Toast(that.$t('address.success'))
           that.$router.go(-1)
         } else {
-          Toast(res.data.message)
+          Toast(res.message)
         }
       });
+      }else{
+        Toast(that.$t('address.postcode'))
+      }
+      
     }
     mounted() {
       let that = this as any

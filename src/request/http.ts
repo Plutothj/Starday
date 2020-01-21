@@ -60,7 +60,7 @@ axios.interceptors.response.use(
         // 跳转登录页面
         case 401:
           Toast({
-            message: "登录过期，请重新登录",
+            message: "ログインしてください",
             duration: 1000,
             forbidClick: true
           });
@@ -80,7 +80,7 @@ axios.interceptors.response.use(
           break;
         case 403:
           Toast({
-            message: "登录过期，请重新登录",
+            message: "ログインしてください",
             duration: 1000,
             forbidClick: true
           });
@@ -111,7 +111,7 @@ axios.interceptors.response.use(
         // 其他错误，直接抛出错误提示
         case 500:
           Toast({
-            message: "服务器开小差了 稍后再试",
+            message: "エラーが発生しました。後でやり直してください",
             duration: 1500,
             forbidClick: true
           });

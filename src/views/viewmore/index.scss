@@ -1,0 +1,169 @@
+.app-store {
+    width: 100%;
+    height: 100%;
+    background: #f4f4f4;
+    text-align: left;
+    .clear::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .store-title {
+      position: relative;
+      .van-nav-bar__left .van-icon {
+        color: #7d7d7d;
+      }
+      .title-right {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        bottom: 20px;
+        right: 0;
+        .img-container {
+          width: 20px;
+          height: 20px;
+          margin: 0 auto;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .right {
+          margin-right: 10px;
+        }
+        .info {
+          width: 13px;
+          height: 13px;
+          line-height: 13px;
+          text-align: center;
+          border-radius: 50%;
+          overflow: hidden;
+          background: rgba(237, 88, 33, 1);
+          font-size: 9px;
+          font-family: PingFangSC-Regular;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 1);
+          position: absolute;
+          top: 6px;
+          right: -6px;
+        }
+      }
+    }
+    .store-goods {
+      background: #fff;
+      .van-tabs__wrap {
+        .van-tabs__nav {
+          .van-tab {
+            flex-basis: 35% !important;
+            .van-ellipsis {
+              display: inline-block;
+              width: auto;
+            }
+          }
+        }
+      }
+      .tabs-content {
+        padding: 0 15px;
+        background: #fff;
+        .active {
+          color: #7d7d7d;
+        }
+        .van-tabs__line {
+          display: none;
+        }
+        .goods-list {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          padding-bottom: 50px;
+          padding-top: 10px;
+          .goods-item {
+            width: 48%;
+            margin-bottom: 10px;
+            .img-container {
+              width: 173px;
+              height: 173px;
+              border-radius: 5px;
+              overflow: hidden;
+              margin: 0 auto;
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+            .goods-name {
+              height: 40px;
+              font-size: 14px;
+              font-family: PingFangSC-Regular;
+              font-weight: 400;
+              color: rgba(51, 51, 51, 1);
+              line-height: 20px;
+              margin: 10px 0;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              overflow: hidden;
+            }
+            .prices {
+              display: flex;
+              justify-content: start;
+              align-items: baseline;
+              .now-price {
+                font-size: 17px;
+                font-family: DINAlternate-Bold;
+                font-weight: bold;
+                color: rgba(237, 88, 33, 1);
+              }
+              .line-price {
+                font-size: 11px;
+                font-family: DINAlternate-Bold;
+                font-weight: bold;
+                color: rgba(153, 153, 153, 1);
+                position: relative;
+                margin-left: 5px;
+              }
+              .line {
+                width: 100%;
+                height: 1px;
+                background: rgba(153, 153, 153, 1);
+                position: absolute;
+                top: -5px;
+                left: 0;
+              }
+            }
+          }
+          .van-list__finished-text {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+          }
+          .van-list__loading {
+            width: 100%;
+            text-align: center;
+          }
+        }
+      }
+      .tabsFixed {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        .van-tabs__content {
+          background: #fff;
+        }
+      }
+    }
+    .goTop {
+      position: fixed;
+      bottom: 60px;
+      right: 10px;
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }

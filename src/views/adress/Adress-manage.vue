@@ -15,9 +15,9 @@
               v-model="checked"
             />
             <p class="name">{{item.realName}}&nbsp;</p>
-            <p class="detail">{{AreaList.province_list[item.areaId] + " " + AreaList.city_list[item.cityId]+' '}}{{item.deliveryAddress}}</p>
-            <p class="phone">手机号：{{item.mobile}}</p>
-            <p class="postcode">邮政编码：{{item.postcode}}</p>
+            <p class="detail">{{item.address+ " " + item.deliveryAddress}}</p>
+            <p class="phone">{{ $t('user_info.phone')+':'+item.mobile}}</p>
+            <p class="postcode">{{$t('address.postalCode2')+':'+item.postcode}}</p>
             <span style="float:right" class="del" @click="deladress(item.id)">{{$t('address.del')}}</span>
             <span style="float:right" class="edit" @click="goedit(item)">{{$t('address.edit')}}</span>
             <van-divider />
@@ -102,7 +102,7 @@ export default class AdressManage extends Vue{
       console.log(res);
       if (res.code == '200') {
         Toast(that.$t('address.p2'))
-        that.reload()
+        that.$router.go(0)
       }
       
     });

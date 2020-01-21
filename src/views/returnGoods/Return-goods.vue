@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     onClickLeft() {
-      this.$router.go(-1);
+      this.$router.go(-2);
     },
     // onSelect(value){
     //     console.log(value.name)
@@ -164,14 +164,16 @@ export default {
           orderId:that.id,
           returnReason: that.returnReason,
           refundExplain: that.message,
-          returnImg: that.images,
+          imgList: that.images,
           refundType:that.radio
         }
       ).then(res => {
         console.log(res);
         if (res.code == '200'){
-            Toast(res.context)
+            
             that.$router.push('/returnlist')
+        }else {
+          // Toast(res.message)
         }
       });
     },
@@ -180,7 +182,7 @@ export default {
       that.$fetch(
         api.getReasons
       ).then(res=>{
-        console.log('tag', res)
+        // console.log('tag', res)
         
       })
     },

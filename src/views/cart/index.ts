@@ -27,7 +27,8 @@ import Component from "vue-class-component";
 
 export default class cart extends Vue {
 
-  @Inject() private reload = (this as any).reload
+  @Inject() 
+  reload = (this as any).reload
   allChecked: boolean = false //全选
   cartList: Array<any> = []
   checkedList: Array<any> = []
@@ -43,6 +44,7 @@ export default class cart extends Vue {
     let that = (this as any);
     // 购物车信息
     that.getData();
+    
   }
 
   //method
@@ -530,7 +532,7 @@ export default class cart extends Vue {
         console.log("-------------删除商品--res", res);
         if (res.data.code == "200") {
 
-          that.reload();
+          that.reload;
           that.getData();
           Toast(that.$t('address.p2'));
         } else {

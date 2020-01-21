@@ -63,6 +63,16 @@ export default class Classification extends Vue {
         }
       });
   }
+  beforeRouteLeave(to:any,from:any,next:any){
+    if(to.path == '/'||to.path == '/cart'||to.path == '/usermain'){
+          //缓存
+        from.meta.keepAlive = true;
+    }else{
+          //不缓存
+        from.meta.keepAlive = false ;
+    }
+    next()
+  }
   //跳转三级分类
   goThreeClass(e:any, m:any) {
     let that = (this as any);
@@ -78,8 +88,10 @@ export default class Classification extends Vue {
     })
     let threeClass = JSON.stringify(e)
     let sameClass = JSON.stringify(m)
+    let taptype:string = '2'
     window.localStorage.setItem('threeClass', threeClass)
     window.localStorage.setItem('sameClass', sameClass)
+    window.localStorage.setItem('taptype', taptype)
   }
 
   mounted() {

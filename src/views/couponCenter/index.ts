@@ -40,8 +40,8 @@ export default class extends Vue {
           endAt: getdate('Y-m-d',info.endTime),
           valueDesc: info.denomination,
           unitDesc: '円',
-          description:info.couponType==0?'通用券':info.couponType==1?'店铺券':'运费券',
-          
+          description:info.goodsType==0?'通用券':info.goodsType==1?'单品券':'运费券',
+          type:info.couponAmount-info.couponNum == 0?true:false
         }
         that.list.push(coupon)
         })

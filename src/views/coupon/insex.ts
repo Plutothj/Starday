@@ -27,7 +27,7 @@ export default class Coupon extends Vue{
       status:String= ""
       return1:Array<any>=[]
       return2:Array<any>=[]
-      state:Number= 1
+      state:string|Number = '1'
       chosenCoupon:Number= -1
       coupons: Array<any>=[]
       disabledCoupons:Array<any>= []
@@ -133,51 +133,58 @@ export default class Coupon extends Vue{
           valueDesc: info.couponActivity.denomination,
           unitDesc: '円',
           description:info.couponActivity.couponType==0?'通用券':info.couponActivity.couponType==1?'店铺券':'运费券',
-          
+          isuse:info.couponActivity.couponUseState
         }
-        that.coupons.push(coupon)
+        if (coupon.isuse == 1) {
+          that.coupons.push(coupon)
+        }else{
+          that.disabledCoupons.push(coupon)
+        }
+        
+
+        
         })
         
       });
     }
-    getDelData(){
+    // getDelData(){
            
-      let that = (this as any)
-      that.state = 3 
-      that.$post(
-        api.getCouponList,
-        {
-          couponState:that.state
-        }
-      ).then((res:any) => {
-        console.log(res);
+    //   let that = (this as any)
+    //   that.state = '3' 
+    //   that.$post(
+    //     api.getCouponList,
+    //     {
+    //       couponState:that.state
+    //     }
+    //   ).then((res:any) => {
+    //     console.log(res);
         
-        let infolist = res.context.couponActivityVo
-        infolist.map((info:any)=>{
-          let coupon = {
-          id:info.couponActivity.couponId,
-          available: 1,
-          condition: info.couponActivity.fullbuyType==0?'无门槛':'满'+info.couponActivity.fullbuyPrice+'元可用',
-          reason: '',
-          value: info.couponActivity.denomination*100,
-          name:info.couponActivity.couponName,
-          startAt: info.couponActivity.startTime,
-          endAt: info.couponActivity.endTime,
-          valueDesc: info.couponActivity.denomination,
-          unitDesc: '円',
-          description:info.couponActivity.couponType==0?'通用券':info.couponActivity.couponType==1?'店铺券':'运费券',
+    //     let infolist = res.context.couponActivityVo
+    //     infolist.map((info:any)=>{
+    //       let coupon = {
+    //       id:info.couponActivity.couponId,
+    //       available: 1,
+    //       condition: info.couponActivity.fullbuyType==0?'无门槛':'满'+info.couponActivity.fullbuyPrice+'元可用',
+    //       reason: '',
+    //       value: info.couponActivity.denomination*100,
+    //       name:info.couponActivity.couponName,
+    //       startAt: info.couponActivity.startTime,
+    //       endAt: info.couponActivity.endTime,
+    //       valueDesc: info.couponActivity.denomination,
+    //       unitDesc: '円',
+    //       description:info.couponActivity.couponType==0?'通用券':info.couponActivity.couponType==1?'店铺券':'运费券',
           
-        }
-        that.disabledCoupons.push(coupon)
-        })
+    //     }
+    //     that.disabledCoupons.push(coupon)
+    //     })
         
-      });
-    }
+    //   });
+    // }
 
       mounted() {
    
    this.getData()
-   this.getDelData()
+  //  this.getDelData()
 
   }
 }

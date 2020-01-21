@@ -46,7 +46,7 @@ export default class Index extends Vue {
       bannerNum:any=  null //轮播图数量
       private colorList:Array<any>= []
       goodsList:Array<any>= []
-
+      marketingList:Array<any> = []
       skuid:String= ""
       // 颜色尺码弹窗数据
       skuShow:Boolean= false
@@ -104,12 +104,31 @@ export default class Index extends Vue {
         //获取产品详情信息
         that.getData();
         //获取mini购物车数量
-        that.getMiniPurchases();
-        that.getStoreGoods()
+        
+        if (localStorage.getItem('storeId')||localStorage.getItem('accountid')) {
+          that.getStoreGoods()
+          that.getMiniPurchases();
+        }else{
+          return;
+        }
+        
         //是否已关注
         // that.isGoodsFollow();
       }
-      //method
+
+      beforeRouteLeave(to:any,from:any,next:any){
+        
+     
+          if(to.path == '/commentlist'){
+                //缓存
+              from.meta.keepAlive = true;
+          }else{
+                //不缓存
+              from.meta.keepAlive = false ;
+          }
+          next()
+      }
+
 
           // 返回
     goBack() {
@@ -220,6 +239,7 @@ export default class Index extends Vue {
             that.storeInfo = context.storeResVo
             that.goodspec= context.goodsSpec
             that.evaluateNum =context.goodsEvaluateNum
+            that.marketingList = context.marketingList
             //获取店铺信息
             // that.getStoreData();
             //获取商品评价数量
@@ -234,9 +254,14 @@ export default class Index extends Vue {
             
             //尺寸与颜色选择框 sku--tree数据结构
             let goodsSpecs = context.goodsSpec;
+            
             let imgurl = context.goodsInfoQuery;
             let goodsInfoss = context.goodsInfos;
             let sku = that.sku;
+            if(goodsSpecs.length < 1){
+              that.sku.price = context.goodsInfoQuery[0].marketPrice
+              that.sku.stock_num = context.goodsInfoQuery[0].stock
+            }
             if (goodsSpecs && goodsSpecs.length > 0) {
               goodsSpecs.map((e:any, index:any) => {
                 let treeItem:any = {
@@ -294,7 +319,7 @@ export default class Index extends Vue {
               e.id = e.goodsInfoId;
               e.price = e.marketPrice;
               e.stock_num = e.stock;
-              console.log(">>>>>>>>>>>>", e);
+              
 
               if (e.specDetailId && e.specDetailId.length > 0) {
                 //多规格
@@ -323,7 +348,7 @@ export default class Index extends Vue {
           } else {
             Toast(res.message);
             setTimeout(() => {
-              that.$router.go(-1)
+              that.$router.push('/')
             }, 1000);
             
           }
@@ -475,7 +500,7 @@ export default class Index extends Vue {
             accountId:localStorage.getItem('accountid'),
             skuId: initialSku.goodsInfoId,
             number: initialSku.selectedNum,
-            skuVal: initialSku.skuVal
+            skuVal: initialSku.skuVal?initialSku.skuVal:''
           }
         )
         .then((res:any)=> {
@@ -513,16 +538,21 @@ export default class Index extends Vue {
       //   return;
       // }
       let that = (this as any);
-      // that.$post(
-      //     api.getCartGoods
-      //   ).then((res :any)=> {
-      //     console.log("-------------mini购物车--res",  Number(res.context.items.length) );
-      //     if (res.code == ConstKey.SUCCESS) {
-      //       that.carNum = Number(res.context.items.length) 
-      //     } else {
-      //       Toast(res.message);
-      //     }
-      //   });
+      if (localStorage.getItem('accountid')) {
+        that.$post(
+          api.getCartGoods
+        ).then((res :any)=> {
+          console.log("-------------mini购物车--res",  Number(res.context.items.length) );
+          if (res.code == ConstKey.SUCCESS) {
+            that.carNum = Number(res.context.items.length) 
+          } else {
+            Toast(res.message);
+          }
+        });
+      }else{
+        that.carNum = 0
+      }
+      
     }
     
     //获取店铺推荐商品列表

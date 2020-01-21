@@ -1,13 +1,14 @@
-import Button from "../../components/Button.vue";
+import Buttons from "../../components/Button.vue";
 import api from "../../request/api";
 import Vue from "vue";
-import {NavBar,Field,Loading} from 'vant'
-Vue.use(NavBar).use(Field).use(Loading)
+import Reg from "../../until/reg";
+import {NavBar,Field,Loading,Button,Toast,CellGroup} from 'vant'
+Vue.use(NavBar).use(Field).use(Loading).use(Toast).use(Button).use(CellGroup)
 import Component from 'vue-class-component'
 
 @Component({
   components: {
-    Button
+    Buttons
   }
 })
 export default class Addcard extends Vue{
@@ -20,8 +21,11 @@ export default class Addcard extends Vue{
       adress:string= ""
       show:Boolean= false
       id:string | null=''
-
-
+      emile:string|null = ''
+      loadtext:string= '发送验证码'
+      disabled:boolean= false
+      sms:string= ''
+      time:number= 180
 
     onClickLeft() {
       this.$router.go(-1);
@@ -30,7 +34,7 @@ export default class Addcard extends Vue{
     addcard() {
       let that = (this as any)
       
-      if (that.card_NO.length==16&&that.nominee.length&&that.expire.length) {
+      if (that.card_NO.length==16&&that.nominee.length&&that.expire.length==4&&that.expire.substring(2,4)<13) {
         that.show=true
         that.$post(
        
@@ -40,6 +44,7 @@ export default class Addcard extends Vue{
           customerId: this.id,
           expire: this.expire,
           nominee: this.nominee,
+          verifyCode:this.sms
         }
       ).then((res:any)=>{
         console.log(res)
@@ -53,14 +58,55 @@ export default class Addcard extends Vue{
       })
         
       }else{
-        this.$toast('请输入正确格式')
+        this.$toast('正しい形式を入力してください')
       }
       
+    }
+    sendCode() {
+      let that = (this as any)
+      const regmail = new RegExp(Reg.mailbox);
+      if (regmail.test(that.emile)) {
+        that.time = 180;
+        that.disabled = true;
+        that.timer();
+        that.$fetch(
+          api.addCreitcardcode
+        ).then((res:any) => {
+          if (res.code == '200') {
+            Toast('发送成功')
+
+
+
+          } else {
+
+            Toast(res.message)
+          }
+
+      })
+      } else {
+        Toast('正しいメールアドレスを入力してください')
+      }
+
+      
+    }
+
+    timer() {
+      if (this.time > 0) {
+        this.time--;
+        //                 console.log(this.time);
+        this.loadtext = this.time + "s后重新获取";
+        setTimeout(this.timer, 1000);
+      } else {
+        this.time = 0;
+        this.loadtext = "获取验证码";
+        this.disabled = false;
+      }
     }
 
    mounted () {
     this.id = localStorage.getItem('accountid');
-    }
+    this.emile = localStorage.getItem('username')
+   }
 }
 
 

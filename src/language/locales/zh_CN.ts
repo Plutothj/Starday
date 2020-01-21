@@ -25,7 +25,8 @@ export default {
     saveChange:'确认修改',
     success:'修改成功',
     changeinfo:'修改资料',
-    integral:'可用积分'
+    integral:'可用积分',
+    resetPaw:'重置密码'
     
   },
   threeClass:{
@@ -60,7 +61,8 @@ export default {
     REJECT_RECEIVE:'拒绝收货',
     REFUND_FAILED:'退款失败',
     INIT:'已创建',
-    returning:'退款中'
+    returning:'退款中',
+    returning2:'申请退款中'
  },
  returnGoods:{
    return:'申请退货',
@@ -83,7 +85,7 @@ export default {
    orderNo:'订单号：',
    returnNo:'退单号：',
    returnTime:'退单时间：',
-   service:'售后原因：',
+   service:'拒绝原因：',
    description:'备注：',
    returnPrice:'退款金额:'
  },
@@ -91,7 +93,8 @@ export default {
    reset:'重置密码',
    inputNew:'请输入新密码',
    savePwd:'确认密码',
-   save:'确定'
+   save:'确定',
+   code:'请输入验证码'
  },
  register:{
    emile:'邮箱',
@@ -220,11 +223,11 @@ export default {
     cancel:'取消订单',
     gopay:'去支付',
     success:'取消成功',
-    nodeliver:'未配送',
+    nodeliver:'待发货',
     delivered:'配送完成',
     title:'订单列表',
     all:'全部',
-    order:'订单',
+    order:'订单号',
     p1:'确认收货',
     cancelorder:'取消订单',
     goPay:'去支付',
@@ -252,12 +255,17 @@ export default {
 
   },
   coupon:{
-    title:'优惠券列表',
+    title:'我的优惠券',
     use:'可使用',
     used:'已使用',
     losed:'已失效',
     mine:'我的优惠券',
-    center:'领券中心'
+    center:'领券中心',
+    name:'优惠券名称:',
+    type:'类型:',
+    date:'日期:',
+    isUsed:'已售罄',
+    flow:'领取'
   },
   index:{
     Recommend:'商品推荐',
@@ -306,6 +314,7 @@ export default {
     p1:'修改默认地址成功',
     p2:'删除成功',
     editadress:'编辑地址',
+    postcode:'请填写完整信息'
     
   },
   supply:{
@@ -370,6 +379,13 @@ export default {
   },
   newAdd:{
     confirm:'确认取消订单吗？',
-    cartSubmit:'请先选择商品！'
+    cartSubmit:'请先选择商品！',
+    completeinfo:'请完善信息后再提交',
+    focus:"关注",
+    noFocus:'取消关注',
+    unusediscount:'不使用优惠',
+    useingrtal:'请输入使用积分',
+    paying:'支付中...'
   }
+  
 }

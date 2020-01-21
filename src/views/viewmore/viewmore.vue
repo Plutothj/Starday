@@ -25,11 +25,11 @@
               <van-list class="goods-list" :loading-text="$t('supply.loadding')" v-model="loading" :finished="finished" :immediate-check="false" :finished-text="$t('threeClass.finished')" @load="onLoad">
                 <div class="goods-item" v-for="(m,inx) in goodsList" :key="inx" @click="goDetail(m)">
                   <div class="img-container">
-                    <img v-lazy="m.goodsInfos[0].goodsInfoImg" alt />
+                    <img v-lazy="m.goods.goodsImg" alt />
                   </div>
-                  <div class="goods-name">{{m.goodsInfos[0].goodsInfoName}}</div>
+                  <div class="goods-name">{{m.goods.goodsName}}</div>
                   <div class="prices">
-                    <div class="now-price">¥{{m.goodsInfos[0].marketPrice}}</div>
+                    <div class="now-price">¥{{m.goods.marketPrice}}</div>
                     <!-- <div class="line-price">
                         ¥{{m.goodsInfos[0].marketPrice}}
                         <p class="line"></p>

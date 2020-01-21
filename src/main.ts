@@ -17,6 +17,18 @@ import VueQriously from "vue-qriously";
 
 
 import coupon from 'v-coupon'
+
+import Component from 'vue-class-component'
+
+// import Vconsole from 'vconsole'
+// const vConsole:any = new Vconsole()
+
+// Vue.use(vConsole)
+Component.registerHooks([
+  'beforeRouteEnter',//进入路由之前
+  'beforeRouteLeave',//离开路由之前
+  'beforeRouteUpdate'
+])
 Vue.use(coupon)
 Vue.use(VueQriously)
 
@@ -60,5 +72,9 @@ new Vue({
   router,
   store,
   i18n,
-  render: h => h(App)
+  render: h => h(App),
+ //  mounted () {
+ // // You'll need this for renderAfterDocumentEvent.
+ // document.dispatchEvent(new Event('render-active'))
+ // }
 }).$mount('#app')

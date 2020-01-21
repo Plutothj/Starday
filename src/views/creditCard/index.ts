@@ -38,29 +38,35 @@ export default class CreditCard extends Vue {
         }
       }).then((res:any) => {
         console.log(res);
-        
-        this.reload()
-      });
-    }
-
-    mounted() {
-    this.id = localStorage.getItem('accountid')
-    let that =(this as any)
-    that.$post(
-     api.Creitcard,
-     {
-       customerId:that.id
-     }
-      
-    ).then((res:any) => {
-      console.log(res);
-      // this.cardList = res.data.context;
-        if (res.context.length != 0) {
-          that.loading = false
-          that.cardList = res.context;
+        if (res.code == 200) {
+          that.getData()
+          that.reload()
         }
         
-      
-    });
-  }
+      });
+    }
+    getData(){
+      this.id = localStorage.getItem('accountid')
+      let that =(this as any)
+      that.$post(
+       api.Creitcard,
+       {
+         customerId:that.id
+       }
+        
+      ).then((res:any) => {
+        console.log(res);
+        // this.cardList = res.data.context;
+          if (res.context.length != 0) {
+            that.loading = false
+            that.cardList = res.context;
+          }
+          
+        
+      });
+    }
+    mounted() {
+      let that =(this as any)
+      that.getData()
+    }
 }

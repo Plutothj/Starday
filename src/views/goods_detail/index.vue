@@ -38,10 +38,10 @@
         </div>
       </div>
       <div class="sail-No">
-        <div class="sail-content one">
+        <!-- <div class="sail-content one">
           <span>{{$t('goodsdetail.Sales')}}</span>
           <span>{{saleNum}}</span>
-        </div>
+        </div> -->
         <div class="sail-content">
           <span>{{$t('goodsdetail.Stock')}}</span>
           <span>{{stock}}</span>
@@ -50,8 +50,8 @@
     </div>
   </div>
 
-  <div class="activity" >
-    <!-- <van-tag class="tag" type="warning" v-for="(item,index) in colorList[0].marketingGoodsDTO" :key='index'>{{item.marketingDto.marketingName}}</van-tag> -->
+  <div class="activity"  v-if="marketingList.length>=1">
+    <van-tag class="tag" type="warning" v-for="(item,index) in marketingList" :key='index'>{{item.marketingName}}</van-tag>
   </div>
 
 

@@ -12,8 +12,13 @@ export default {
     HomeCate:'api/goodsCate/allGoodsCates',
     shortUrl: 'https://sanyi-x-site.oss-cn-hongkong.aliyuncs.com/temp_api/',
     HomeData:'api/goods/getIndexGoods',
-    SearchGoods:'api/search/query',
+    //搜索商品
+    SearchGoods:'/api/search/query',
+    //获取用户信息
     getUserInfo:'api/customer/queryCustomerInfo',
+    //更改密码
+    updatePass:'api/account/updatePass',
+    //获取地址
     getAdress:'api/customer/selCustomerAddress',
     //修改地址
     updateAdress:'api/customer/saveCustomerAddress',
@@ -21,15 +26,21 @@ export default {
     delAdress:'api/customer/delAddress',
     //设为默认地址
     defaultAdress:'api/customer/updDefAddress/',
+    //添加礼品卡
     addGiftcard:'api/giftcard/bondGiftcard',
     Creitcard:'api/pg/card/query/card',
+    //添加信用卡
     addCreitcard:'api/pg/card/bind/card',
+    //添加信用卡发送验证码
+    addCreitcardcode:'api/pg/card/send/verify/code',
+    //删除信用卡
     delCreitcard:'api/pg/card/del/card',
     //获取用户全部信息
     getAllUserInfo:'api/customer/queryCustomerAllInfo',
     //更新用户信息
     updateCustomer:"api/customer/updateCustomer",
     getCateGoods:'api/search/query',
+    //获取商品详情
     getGoodsDetails:'api/goods/getGoodsDetails',
     //获取店铺推荐商品
     getDetailStoreGoods:'api/goods/getStoreGoods',
@@ -40,7 +51,7 @@ export default {
 
     Goodslike:'api/goods/follow',
     //获取购物车商品
-    getCartGoods:'/api/shopcart/listv3',
+    getCartGoods:'/api/shopcart/listv4',
     //删除单个购车商品
     delCartGoods:'api/shopcart/remove',
     //删除所有购物车商品
@@ -77,8 +88,11 @@ export default {
     likeGoods:'/api/goods/getFollows',
     //商品取消关注
     cancelLike:'api/goods/follow',
+    //点击退单
     returnGoods:'api/return/order/ways',
+    //退货退款列表
     returnGoodsList:'api/return/order/returnOrderInfoPage/10/1',
+    //退单详情
     returnDetail:'api/return/order/refundOrderDetails',
     //我的订单
     order:'api/order/queryOrderPage/10/1',
@@ -101,7 +115,7 @@ export default {
     //获取订单详情
     getorderDetail:'api/order/orderDetail',
     //评论商品
-    goodsEvaluate:"api/goods/goodsEvaluate",
+    goodsEvaluate:"api/goods/saveGoodsEvaluate",
     //店铺
     getStoreinfo:'api/store/getStoreById',
     //关住的店铺
@@ -121,7 +135,11 @@ export default {
     //获取待领取优惠券
     getCouponActList:'api/coupon/getLoginCouponActList',
     //领取优惠券
-    getCustomerCoupon:'api/coupon/getCustomerCoupon'
-
-
+    getCustomerCoupon:'api/coupon/getCustomerCoupon',
+    //获取首页活动
+    getMarketingName:"api/market/getMarketingName",
+    //首页跳转活动页
+    getIndexGoodsPage:"api/goods/getIndexGoodsPage/",
+    //活动商品
+    getMarketingGoods:"api/market/getMarketingGoods"
 }

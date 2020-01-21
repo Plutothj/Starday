@@ -101,7 +101,7 @@ export default class Foundpwd extends Vue {
             console.log('tag',res)
             if (res.code == '200') {
                 that.load = false
-                Toast(res.message)
+                // Toast(res.message)
 
                 that.$router.push('/login')
 

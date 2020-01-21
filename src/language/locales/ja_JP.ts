@@ -25,7 +25,8 @@ export default {
     saveChange:'変更確認',　
     success:'変更しました',
     changeinfo:'個人資料を変更',
-    integral:'使えるポイント'
+    integral:'使えるポイント',
+    resetPaw:'パスワードをリセットする'
   },
   threeClass:{
     finished:'ほかはありません',　
@@ -59,10 +60,11 @@ export default {
     REJECT_RECEIVE:'受け取りを拒否',　
     REFUND_FAILED:'返金失敗',　
     INIT:'作成済み'　,
-    returning:'返金中'
+    returning:'返金中',
+    returning2:'申请返金中'
  },
  returnGoods:{
-   return:'返品を申し込む',　
+   return:'返品を申し込む中',　
    returnmsg:'返金原因',　
    returnPice:'返金金額',　
    returnInfo:'返金説明',　
@@ -90,7 +92,8 @@ export default {
    reset:'パスワードリセット',　
    inputNew:'新しいパスワードを入力してください',　
    savePwd:'パスワードを確認してください',　
-   save:'確認'　
+   save:'確認'　,
+   code:'認証コードを入力してください'
  },
  register:{
    emile:'メールアドレス',　
@@ -208,7 +211,12 @@ export default {
     used:'使用済み',
     losed:'期限切れ',
     mine:'マイクーポン',
-    center:'クーポンセンター'
+    center:'クーポンセンター',
+    name:'クーポン名称:',
+    type:'種類:',
+    date:'期限:',
+    isUsed:'売り切れ',
+    flow:'受取'
   },
   order:{
     Confirmorder:'注文確認',　
@@ -306,6 +314,7 @@ export default {
     p1:'デフォルトの住所を変更しました',　
     p2:'削除しました',　
     editadress:'住所を編集する',　
+    postcode:'正しい郵便番号を入力してください'
     
   },
   supply:{
@@ -370,6 +379,12 @@ export default {
   },
   newAdd:{
     confirm:'注文をキャンセルしてもよろしいですか',
-    cartSubmit:'商品を選択してください'
+    cartSubmit:'商品を選択してください',
+    completeinfo:'情報を完善して提出してください',
+    focus:"フォロー",
+    noFocus:'アンフォロー',
+    unusediscount:'クーポンを使いません',
+    useingrtal:'使用したいポイントを入力してください',
+    paying:'お支払い中'
   }
 }

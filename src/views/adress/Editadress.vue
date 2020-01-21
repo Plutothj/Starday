@@ -15,6 +15,7 @@
       <van-field
         v-model="info.postcode"
         class="reg_emile L0"
+        maxlength='7'
         clearable
         :placeholder="$t('address.postalCode')"
         clickable
@@ -29,7 +30,7 @@
         :placeholder="str"
         right-icon="arrow-down"
         clickable
-        @click-right-icon="toggle"
+        @click="toggle"
         :label="$t('address.local')"
       />
       <van-field
@@ -48,6 +49,7 @@
         clearable
         :placeholder="$t('address.phonenum')"
         clickable
+        maxlength=11
         :error-message="errormsg"
         @input="Regemil"
         :label="$t('address.phone')"
@@ -107,13 +109,18 @@ export default class Editadress extends Vue{
     }
     tap(e:any) {
       console.log(e);
-      
-       
-      this.adress += e[0].name + " "+ e[1].name;
-     
-      this.show = false;
-      this.areaid = e[0].code;
-      this.cityid = e[1].code;
+      let that = (this as any)
+      let city:string = ''
+      if(e[1].name ==e[2].name ){
+        city = e[1].name
+      }else{
+        city = e[1].name + " " +e[2].name
+      }
+      that.info.address = e[0].name + " "+ city
+      that.show = false;
+      that.info.areaid = e[1].code;
+      that.info.cityid = e[2].code;
+      that.info.provinceId =e[0].code
     }
     save() {
       

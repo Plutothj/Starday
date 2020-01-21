@@ -32,11 +32,11 @@ export default class Membership extends Vue{
       
       if (res.code == ConstKey.SUCCESS) {
            
-           let esList = res.context.data;
+           let esList = res.context.list;
             this.info = this.info.concat(esList);
             
            // 数据全部加载完成
-             if (res.context.lastPage) {
+             if (res.context.list.length<1) {
               this.finished = true;
              
             }

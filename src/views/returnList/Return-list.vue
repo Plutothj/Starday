@@ -32,13 +32,13 @@
           </div>
           <div slot="footer" class="slot">
                 <p>
-                  {{ $t("returnList.all") }}{{item.payChannel}}{{ $t("returnList.goods") }}&nbsp;&nbsp;&nbsp; {{ $t("returnList.returnPice") }}
+                  {{ $t("returnList.all") }}{{item.returnOrderItem.length}}{{ $t("returnList.goods") }}&nbsp;&nbsp;&nbsp; {{ $t("returnList.returnPice") }}
                   <span>￥{{item.amount}}</span>
                 </p>
-                <van-button size="small "  @click="cancel(item.orderNumber)" class="button1" >{{$t("returnList.cancel")}}</van-button>
+                <van-button size="small " v-if="item.state == 10 ||item.state == 11 ||item.state == 13" @click="cancel(item.orderNumber)" class="button1" >{{$t("returnList.cancel")}}</van-button>
                 <!-- <van-button size="small " class="button" v-if="item.tradeState.deliverStatus ==='NOT_YET_SHIPPED'">确认收货</van-button> -->
 
-                <van-button size="small " class="button" @click="returndetail(item.order.id,item.orderNumber)">{{$t("returnList.detail")}}</van-button>
+                <van-button size="small "  class="button" @click="returndetail(item.order.id,item.orderNumber)">{{$t("returnList.detail")}}</van-button>
               </div>
         </van-panel>
       <!-- </van-tab>

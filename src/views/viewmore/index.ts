@@ -16,7 +16,7 @@ import Component from 'vue-class-component'
 
 })
 
-export default class  ThreeClass extends Vue{
+export default class  ViewMore extends Vue{
       
       nowClass:Object= {} //上个页面传的该分类
       sameClass:Object= {} //上个页面传的同级分类
@@ -27,16 +27,12 @@ export default class  ThreeClass extends Vue{
       cateId2:String= ''
       carNum:Number= 0
       tabList:Array<any>= []//顶部同级分类
-      tabListChild:Array<any>= [{
+      tabListChild:Array<any>= [
+        {
           name: "総合"
         },
         
-        {
-          name: "价格"
-        },
-        {
-          name: "レビュー数"
-        }
+        
       ]
       goodsList:Array<any>= []
       cateId:String= "" //分类ID
@@ -51,58 +47,19 @@ export default class  ThreeClass extends Vue{
       sorted:string =''
       sortOrder:string = 'asc'
       allCateid:string = ''
+      type:string|number = ''
+      indexId:string|number = ''
   mounted() {
     let that = (this as any);
-    let taptype:any = window.localStorage.getItem('taptype')
-   
-    console.log(that.$route)
-    if (taptype=='2') {
-      
-      let threeClass:any = window.localStorage.getItem("threeClass");
-      let sameClass:any = window.localStorage.getItem("sameClass");
-
-      that.nowClass = that.$route.params.nowClass || JSON.parse(threeClass);
-      that.sameClass = that.$route.params.sameClass || JSON.parse(sameClass);
-
-      that.threeTitle = that.nowClass.cateNameJp;
-      that.cateId = that.nowClass.cateId;
-      that.cateId2 = that.sameClass.cateId
-      that.allCateid = that.cateId+','+that.cateId2
-      that.getData();
-    }else if(taptype=='1'){
-      
-     
-
-      that.allCateid = localStorage.getItem('allCateid')
-      that.threeTitle = localStorage.getItem('threeTitle')
-      that.getData();
-    }
-    console.log("----------nowClass", that.nowClass);
-    console.log("----------that.sameClass", that.sameClass);
-    that.tabList = that.sameClass.goodsCateDTO;
-    //mini购物车
-    // that.getMiniPurchases();
-    //商品信息
-    
-    
+    that.type = that.$route.params.type
+    that.indexId = that.$route.params.indexId
+    that.threeTitle = that.$route.params.titleJp
+    that.getData();
     
     
     //页面滚动高度
     window.addEventListener("scroll", that.fixedHead);
   }
-
-//   beforeRouteLeave(to:any,from:any,next:any){
-        
-     
-//     if(to.path == '/goods-detail'){
-//           //缓存
-//         from.meta.keepAlive = true;
-//     }else{
-//           //不缓存
-//         from.meta.keepAlive = false ;
-//     }
-//     next()
-// }
   
  
  
@@ -175,69 +132,35 @@ export default class  ThreeClass extends Vue{
 
     //获取页面信息
     getData() {
-      let that = (this as any);
-      //获取同级分类信息
       
-      // if (that.$route.params.indexId !== undefined) {
-      //   let info = that.$route.params
-      //   that.getMoreData(info)
-      // }else{
-        that.$post(
-          api.getCateGoods, {
-            goodsCateId: that.allCateid,
-            keywords: "",
-            sorted: that.sorted,
-            sortOrder: that.sortOrder,
-            pageSize: ConstKey.PAGE_SIZE,
-            pageNumber: that.pageNum,
+      let that =(this as any);
+      that.$post(
+        api.getIndexGoodsPage+`${ConstKey.PAGE_SIZE}/${that.pageNum}`,
+        {
+          type:that.type,
+          indexId:that.indexId
+        }
+      ).then((res:any) => {
+
+        if (res.code == '200') {
+          that.isLoading = true;
+          let esList = res.context.data;
+          that.goodsList = that.goodsList.concat(esList);
+          // 数据全部加载完成
+          if (res.context.data.length == 0) {
+            that.finished = true;
           }
-        ).then((res:any) => {
-          console.log("-------------商品分页--res", res);
-          if (res.code == '200') {
-            that.isLoading = true;
-            let esList = res.context.data;
-            that.goodsList = that.goodsList.concat(esList);
-            // 数据全部加载完成
-            if (res.context.data.length == 0) {
-              that.finished = true;
-            }
-            // 加载状态结束
-            that.loading = false;
-          } else {
-            // 加载状态结束
-            that.loading = false;
-            Toast(res.message);
-          }
-        });
+          // 加载状态结束
+          that.loading = false;
+        } else {
+          // 加载状态结束
+          that.loading = false;
+          Toast(res.message);
+        }
+      })
       
     }
-    // getMoreData(item:any){
-    //   let that =(this as any);
-    //   that.$post(
-    //     api.getIndexGoodsPage+`${ConstKey.PAGE_SIZE}/${that.pageNum}`,
-    //     {
-    //       type:item.type,
-    //       indexId:item.indexId
-    //     }
-    //   ).then((res:any) => {
-
-    //     if (res.code == '200') {
-    //       that.isLoading = true;
-    //       let esList = res.context.data;
-    //       that.goodsList = that.goodsList.concat(esList);
-    //       // 数据全部加载完成
-    //       if (res.context.data.length == 0) {
-    //         that.finished = true;
-    //       }
-    //       // 加载状态结束
-    //       that.loading = false;
-    //     } else {
-    //       // 加载状态结束
-    //       that.loading = false;
-    //       Toast(res.message);
-    //     }
-    //   })
-    // }
+    
     //上拉加载
     onLoad() {
       let that = (this as any);
@@ -256,21 +179,21 @@ export default class  ThreeClass extends Vue{
       // if (!this.checkIsLogin()) {
       //   return;
       // }
-      let that = (this as any);
-      that
-        .$axios({
-          method: "post",
-          url: "site/miniPurchases",
-          data: {}
-        })
-        .then((res:any) => {
-          console.log("-------------mini购物车--res", res);
-          if (res.data.code == ConstKey.SUCCESS) {
-            that.carNum = res.data.context.num;
-          } else {
-            Toast(res.data.message);
-          }
-        });
+      // let that = (this as any);
+      // that
+      //   .$axios({
+      //     method: "post",
+      //     url: "site/miniPurchases",
+      //     data: {}
+      //   })
+      //   .then((res:any) => {
+      //     console.log("-------------mini购物车--res", res);
+      //     if (res.data.code == ConstKey.SUCCESS) {
+      //       that.carNum = res.data.context.num;
+      //     } else {
+      //       Toast(res.data.message);
+      //     }
+      //   });
     }
     // 返回
     goBack() {
@@ -281,7 +204,7 @@ export default class  ThreeClass extends Vue{
     goDetail(item:any) {
       let that = (this as any);
       console.log(item)
-      let goodsInfoId = item.goodsId;
+      let goodsInfoId = item.goodsInfos[0].goodsInfoId;
       window.localStorage.setItem("goodsInfoId", goodsInfoId);
       that.$router.push({
         name: "goods_detail",

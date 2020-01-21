@@ -79,6 +79,7 @@ export default class Login extends Vue {
                         //存入登录Token
                         localStorage.setItem('token', res.context.token);
                         localStorage.setItem('accountid', res.context.accountId);
+                        localStorage.setItem('username', res.context.userName);
                         that.saveId(res.context.accountId)
                         that.saveEmile(that.username)
                         that.saveName(res.context.userName)
@@ -90,7 +91,7 @@ export default class Login extends Vue {
                         if (this.$route.query == obj) {
                             (this as any).$router.push(this.$route.query.redirect)
                         } else {
-                            this.$router.go(-1)
+                            this.$router.push('/')
                         }
 
                     }

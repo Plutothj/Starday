@@ -11,6 +11,7 @@
           show-action
           shape="round"
           @search="onSearch"
+          
         >
           <div slot="action" @click="onSearch">{{$t('search.sea')}}</div>
         </van-search>
@@ -83,6 +84,7 @@ export default class Searchview extends Vue {
     }
     checkHisWord(item:any){
       this.searchValue=item;
+      this.onSearch()
     }
     goBack() {
       (this as any).$router.back(-1);
