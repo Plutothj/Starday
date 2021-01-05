@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "autoprefixer": "^9.7.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "core-js": "^3.4.3",
     "file-loader": "^5.0.2",
     "prerender-spa-plugin": "^3.4.0",
